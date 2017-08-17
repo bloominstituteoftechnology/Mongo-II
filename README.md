@@ -38,8 +38,8 @@ about StackOverflow questions:
 
 ## Instructions
 StackOverflow questions and answers are *both* represented as post objects. Here
-are two example posts from from `posts.json`, your dataset of StackOverflow
-posts. The first post is a question, whereas the second is an answer:
+are two example posts from `posts.json`, your dataset of StackOverflow posts.
+The first post is a question, whereas the second is an answer:
 
 ```js
 // this is a question
@@ -119,7 +119,7 @@ posts` test passes (see `tests/populate.test.js`).
 In `src/server.js`, add a route handler for `GET /accepted-answer/:soID`. When
 the client makes a `GET` request to `/accepted-answer/:soID`:
 
-1. Find the question with the given soID (1 query).
+1. Find the question with the given `soID` (1 query).
 2. Find the accepted answer of the question by using the `acceptedAnswerID`
    field (1 query).
 3. Send back a JSON response with the single accepted answer post object.
@@ -131,7 +131,7 @@ and status code.
 ### `GET /top-answer/:soID`
 When the client makes a `GET` request to `/top-answer/:soID`:
 
-1. Find the question with the given soID (1 query).
+1. Find the question with the given `soID` (1 query).
 2. Find the answer of the given question that has the *highest* score and *is
    not the accepted answer* (1 query).
 3. Send back a JSON response with the single top answer post object.
@@ -160,3 +160,12 @@ When the client makes a `GET` request to `/npm-answers`:
 
 You should *only* use 2 queries, and no more, for this route. If there's any
 error, report it with an appropriate message and status code.
+
+### How many queries am I making?
+Each time you construct a query with some Mongoose method (e.g. `Post.find()`)
+and introduce a callback that's called when you get results, that's 1 query.  If
+you do this within a loop (e.g. a `forEach`), that's N queries, 1 per element of
+the array. For this assignment, you *should not* make any queries in a loop.
+
+Constructing a complex query (e.g. `Post.find().sort()`) is still a single query
+so long as there is a single callback that listens for results.
