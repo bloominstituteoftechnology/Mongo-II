@@ -10,6 +10,28 @@ mongoose.connect('mongodb://localhost/so-posts', { useMongoClient: true });
 
 const PostSchema = new mongoose.Schema({
   // TODO: write your schema here
+  soID: Number,
+  parentID: {
+    type: Number,
+    default: null,
+  },
+  url: {
+    type: String,
+    // default: `https://stackoverflow.com/q/${soID}`,
+  },
+  title: String,
+  body: String,
+  score: Number,
+  tags: Array,
+  acceptedAnswerID: {
+    type: Number,
+    default: null,
+  },
+  user: {
+    soUserID: Number,
+    name: String,
+    reputation: Number,
+  }
 });
 
 module.exports = mongoose.model('Posts', PostSchema);
