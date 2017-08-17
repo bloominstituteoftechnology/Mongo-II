@@ -10,11 +10,12 @@ mongoose.connect('mongodb://localhost/so-posts', { useMongoClient: true });
 
 const PostSchema = new mongoose.Schema({
   // TODO: write your schema here
-  soId: {
+  soID: {
     type: Number,
   },
-  parentId: {
+  parentID: {
     type: Number,
+    default: null,
   },
   url: {
     type: String,
