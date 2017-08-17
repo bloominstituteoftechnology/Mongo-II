@@ -102,28 +102,25 @@ The first post is a question, whereas the second is an answer:
 ```
 
 `soID` stands for StackOverflow ID, and is the unique numeric identifier that
-StackOverflow uses to discern its posts.
+StackOverflow uses to discern its posts. - OKAY √
 
 If the post's `parentID` field is `null`, that means the post is a question. By
 contrast, if `parentID` is *not* `null`, the post is an answer. For an answer,
-the `parentID` is the `soID` of the question that the post is answering.
+the `parentID` is the `soID` of the question that the post is answering. - OKAY √
 
 ### Post Model
-Start by editing `src/post.js`. Based on the posts given above, and the
-`posts.json` file if you need more examples, fill in the `PostSchema`. Fields
-`soID`, `url`, `body`, and `score` are required; all other fields are optional.
-Note that `tags` is an array of *strings* and `user` is a *nested object*; make
-sure you represent their schemas appropriately. Every field that is an id should
-be represented as a `Number`, not as an `ObjectId`, since these are not MongoDB
-references, but rather StackOverflow numeric identifiers.
+Start by editing `src/post.js`. - OKAY √
+Based on the posts given above, and the `posts.json` file if you need more examples, fill in the `PostSchema`. - OKAY √
+Fields `soID`, `url`, `body`, and `score` are required; all other fields are optional. - DONE √
+Note that `tags` is an array of *strings* and `user` is a *nested object*; make sure you represent their schemas appropriately. - OKAY √
+Every field that is an id should be represented as a `Number`, not as an `ObjectId`, since these are not MongoDB references, but rather StackOverflow numeric identifiers. - OKAY √
 
 ### Populate Posts
-Now that you have a schema in place, populate MongoDB by adding all the posts in
-`posts.json`. To do this, fill in the function `populatePosts()` in
-`src/populate.js`. `populatePosts()` should read the posts array by calling
-`readPosts()`, which we've given to you. Then, it should save each post to the
-database. `populatePosts()` should return *a promise* that resolves only when
-*all posts have successfully been added to the database*.
+Now that you have a schema in place, populate MongoDB by adding all the posts in `posts.json`. - OKAY √
+To do this, fill in the function `populatePosts()` in `src/populate.js`. - OKAY √
+`populatePosts()` should read the posts array by calling `readPosts()`, which we've given to you. - OKAY √
+Then, it should save each post to the database. - OKAY √
+`populatePosts()` should return *a promise* that resolves only when *all posts have successfully been added to the database*. - OKAY √
 
 Hints:
 - Calling `.save()` on a Post model without any arguments will return a promise
