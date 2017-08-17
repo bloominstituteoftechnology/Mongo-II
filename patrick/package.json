@@ -6,7 +6,16 @@
     "test": "eslint tests/*.js && eslint src/*.js && mocha -R nyan tests",
     "watch": "npm test -- --watch"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mixelpixel/LS-Mongo-II.git"
+  },
+  "author": "Patrick Kennedy",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mixelpixel/LS-Mongo-II/issues"
+  },
+  "homepage": "https://github.com/mixelpixel/LS-Mongo-II#readme",
   "dependencies": {
     "babel-preset-es2015": "^6.24.0",
     "body-parser": "^1.17.2",
