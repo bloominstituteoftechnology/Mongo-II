@@ -36,19 +36,23 @@ $  npm i
     added 331 packages in 23.997s
 ```
 
+- NOTE: I added a repository to package.json. Otherwise not sure about the requirement warnings...?
+
 - Run `npm test` to run the tests. If you'd like, you can run `npm run watch`
-  to automatically re-reun the tests when you make modifications.
+  to automatically re-reun the tests when you make modifications. - OKAY √
 - To test your application in your browser, or by using
   [Postman](https://www.getpostman.com/), make sure you've installed `nodemon`
   via `npm install -g nodemon` and then run `nodemon src/app.js`. `nodemon` will
   keep the server running and automatically restart it if you change anything.
   You can now make requests to `http://localhost:3000` in your browser or
-  Postman!
+  Postman! - OKAY √
 - Make modifications to `src/populate.js` and `src/server.js` to make the tests
-  pass.
+  pass. - OKAY √
 - If you'd like, feel free to reference the tests in `tests/populate.test.js`
-  and `tests/server.test.js` as you're developing.
-- Once all tests have passed, you're done! Send us a pull request.
+  and `tests/server.test.js` as you're developing. - OKAY √
+- Once all tests have passed, you're done! Send us a pull request. - OKAY √
+
+- `mongod --dbpath data` (if need be, `sudo killall mongod`) - OKAY √
 
 ## Instructions
 StackOverflow questions and answers are *both* represented as post objects. Here
