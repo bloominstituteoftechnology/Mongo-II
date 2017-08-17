@@ -31,6 +31,10 @@ const PostSchema = new mongoose.Schema({
   },
   tags: {
     type: Array,
+  },
+  acceptedAnswerID: {
+    type: Number,
+    default: null,
   }
 });
 

@@ -3,6 +3,7 @@ const express = require('express');
 const Post = require('./post.js');
 
 const STATUS_USER_ERROR = 422;
+const STATUS_SERVER_ERROR = 500;
 
 const server = express();
 // to enable parsing of json bodies for post requests
@@ -20,10 +21,21 @@ server.get('/posts', (req, res) => {
 });
 
 server.get('/accepted-answer/:soID', (req, res) => {
-  const { soID } = req.params;
-  Post.find({soID})
+  const id = req.params.soID;
+  let acceptedAnswerID;
+  Post.find({soID:id})
     .select('acceptedAnswerID')
     .exec((err, answer) => {
+      if (err) {
+        res.status(STATUS_SERVER_ERROR);
+        res.json({error: err});
+        return;
+      }
+      acceptedAnswerID = answer[0].acceptedAnswerID;
+      console.log(acceptedAnswerID);
+    });
+    Post.find({soID:acceptedAnswerID}, (err, answer) => {
+      console.log(acceptedAnswerID);
       if (err) {
         res.status(STATUS_SERVER_ERROR);
         res.json({error: err});
