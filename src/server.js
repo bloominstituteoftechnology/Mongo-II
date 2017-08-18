@@ -43,10 +43,7 @@ server.get('/top-answer/:soID', (req, res) => {
         return;
       }
       const topAnswer = answers.reduce((ta, e) => {
-        if (e && ta) {
-          return e.score > ta.score ? e : ta;
-        }
-        return ta;
+        return e.score > ta.score ? e : ta;
       }, answers[0]);
       res.json(topAnswer);
     });
