@@ -110,26 +110,24 @@ contrast, if `parentID` is *not* `null`, the post is an answer. For an answer,
 the `parentID` is the `soID` of the question that the post is answering. - OKAY √
 
 ### Post Model
-Start by editing `src/post.js`. - OKAY √
-Based on the posts given above, and the `posts.json` file if you need more examples, fill in the `PostSchema`. - OKAY √
-Fields `soID`, `url`, `body`, and `score` are required; all other fields are optional. - DONE √
-Note that `tags` is an array of *strings* and `user` is a *nested object*; make sure you represent their schemas appropriately. - OKAY √
-Every field that is an id should be represented as a `Number`, not as an `ObjectId`, since these are not MongoDB references, but rather StackOverflow numeric identifiers. - OKAY √
+- Start by editing `src/post.js`. - OKAY √
+- Based on the posts given above, and the `posts.json` file if you need more examples, fill in the `PostSchema`. - OKAY √
+- Fields `soID`, `url`, `body`, and `score` are required; all other fields are optional. - DONE √
+- Note that `tags` is an array of *strings* and `user` is a *nested object*; make sure you represent their schemas appropriately. - OKAY √
+- Every field that is an id should be represented as a `Number`, not as an `ObjectId`, since these are not MongoDB references, but rather StackOverflow numeric identifiers. - OKAY √
 
 ### Populate Posts
-Now that you have a schema in place, populate MongoDB by adding all the posts in `posts.json`. - OKAY √
-To do this, fill in the function `populatePosts()` in `src/populate.js`. - OKAY √
-`populatePosts()` should read the posts array by calling `readPosts()`, which we've given to you. - OKAY √
-Then, it should save each post to the database. - OKAY √
-`populatePosts()` should return *a promise* that resolves only when *all posts have successfully been added to the database*. - OKAY √
+- Now that you have a schema in place, populate MongoDB by adding all the posts in `posts.json`. - OKAY √
+- To do this, fill in the function `populatePosts()` in `src/populate.js`. - OKAY √
+- `populatePosts()` should read the posts array by calling `readPosts()`, which we've given to you. - OKAY √
+- Then, it should save each post to the database. - OKAY √
+- `populatePosts()` should return *a promise* that resolves only when *all posts have successfully been added to the database*. - OKAY √
 
 Hints:
-- Calling `.save()` on a Post model without any arguments will return a promise
-  that resolves once that post is saved.
-- `Promise.all()` will come in handy here.
+- Calling `.save()` on a Post model without any arguments will return a promise that resolves once that post is saved. - OKAY √
+- `Promise.all()` will come in handy here. - OKAY √
 
-After you write this function, make sure the `populatePosts() populates all
-posts` test passes (see `tests/populate.test.js`).
+After you write this function, make sure the `populatePosts() populates all posts` test passes (see `tests/populate.test.js`). - DONE √
 
 ### `GET /accepted-answer/:soID`
 In `src/server.js`, add a route handler for `GET /accepted-answer/:soID`. When

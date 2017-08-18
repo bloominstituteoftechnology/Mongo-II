@@ -13,6 +13,7 @@ const populatePosts = () => {
 
 // GET
 
+// required file
 const Post = require('./post');
 
 // helper
