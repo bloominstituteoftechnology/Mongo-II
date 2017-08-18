@@ -71,19 +71,19 @@ server.get('/accepted-answer/:soID', (req, res) => {
 server.get('/top-answer/:soID', (req, res) => {
   const { soID } = req.params;
   Post.findOne({ soID })
-  .exec((error, post) => {
+  .exec((err, post) => {
     if (!post) {
-      sendUserError(error, res);
+      sendUserError({ err }, res);
       return;
     }
-    Post.find({ parentID: soID }, { soID: { $ne: post.acceptedAnswerID } })
+    Post.find({ $and: [{ parentID: soID }, { soID: { $ne: post.acceptedAnswerID } }] })
     .sort({ score: -1 })
-    .limit(1)
-    .exec((err, answer) => {
-      if (!answer) {
-        sendUserError(err, res);
+    .exec((error, answers) => {
+      if (!answers || !answers.length) {
+        sendUserError({ error }, res);
         return;
       }
+      const answer = answers[0];
       res.json(answer);
     });
   });
