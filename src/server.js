@@ -1,4 +1,3 @@
-// GOT IT?
 const bodyParser = require('body-parser');
 const express = require('express');
 const Post = require('./post');
@@ -30,25 +29,6 @@ server.get('/', (req, res) => {
     }
   });
 });
-
-// server.get('/accepted-answer/:soID', (req, res) => {
-//   const { soID } = req.params;
-//   const acceptedAnswerID = 0;
-//   Post.find({ soID }, (error, data) => {
-//     if (error) {
-//       res.status(500);
-//       res.json({ error });
-//     }
-//   });
-//   console.log(acceptedAnswerID);
-//   Post.find({ soID: acceptedAnswerID }, (error, data) => {
-//     if (error) {
-//       res.status(500);
-//       res.json({ error });
-//     }
-//     res.json({ data });
-//   });
-// });
 
 server.get('/accepted-answer/:soID', (req, res) => {
   const { soID } = req.params;
