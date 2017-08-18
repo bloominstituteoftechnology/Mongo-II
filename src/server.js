@@ -31,18 +31,17 @@ server.get('/accepted-answer/:soID', (req, res) => {
         res.json({error: err});
         return;
       }
-      acceptedAnswerID = answer[0].acceptedAnswerID;
-      console.log(acceptedAnswerID);
-    });
-    Post.find({soID:acceptedAnswerID}, (err, answer) => {
-      console.log(acceptedAnswerID);
+      acceptedAnswerID = (answer[0].acceptedAnswerID);
+    }).then(() => {
+    Post.find({ soID : acceptedAnswerID }, (err, ans) => {
       if (err) {
         res.status(STATUS_SERVER_ERROR);
         res.json({error: err});
         return;
       }
-      res.json(answer);
-    });
+      console.log(ans);
+      res.json(ans[0]);
+    })});
 });
 
 module.exports = { server };
