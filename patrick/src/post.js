@@ -39,7 +39,8 @@ const PostSchema = new mongoose.Schema({
     required: true,
   },
   tags: {
-    type: Array,
+    // type: Array,
+    type: [String],
   },
   acceptedAnswerID: {
     type: Number,

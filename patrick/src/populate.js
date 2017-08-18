@@ -3,7 +3,6 @@ const Post = require('./post');
 const posts = require('../posts.json');
 const mongoose = require('mongoose');
 
-
 let savedPosts = null;
 
 const readPosts = () => {
