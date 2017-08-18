@@ -17,27 +17,37 @@ const readPosts = () => {
 
 mongoose.Promise = global.Promise;
 mongoose.connect(
-  'mongodb://localhost/post',
+  'mongodb://localhost/posts',
   { useMongoClient: true }
 );
 
 const populatePosts = () => {
   // TODO: implement this
-  const populatePeople = () => {
-    const allPeople = posts;
-    const promises = allPeople.map(p => new Post(p).save());
-    return Promise.all(promises);
-  };
-
-  return populatePeople()
-    .then(() => {
-      console.log('done');
-      mongoose.disconnect();
-    })
-    .catch((err) => {
-      console.log('ERROR', err);
-      throw new Error(err);
-    });
+  // savedPosts = readPosts();
+  readPosts();
+  const promises = savedPosts.map(post => new Post(post).save());
+  return Promise.all(promises);
+  // const populateSOPosts = () => {
+  //   const allPosts = posts;
+  //   const promises = allPosts.map(p => new Post(p).save());
+  //   return Promise.all(promises);
+  // };
+  // /* eslint no-console: 0 */
+  // return populateSOPosts()
+  //   .then(() => {
+  //     console.log('done');
+  //     mongoose.disconnect();
+  //   })
+  //   .catch((err) => {
+  //     console.log('ERROR', err);
+  //     throw new Error(err);
+  //   });
 };
+
+// populatePosts();
+populatePosts().then((allPosts) => {
+  // console.log('DUN and DONE!!!!!!');
+  return allPosts;
+});
 
 module.exports = { readPosts, populatePosts };

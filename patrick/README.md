@@ -52,6 +52,7 @@ $  npm i
   and `tests/server.test.js` as you're developing. - OKAY √
 - Once all tests have passed, you're done! Send us a pull request. - OKAY √
 
+- `mkdir src/data`
 - `mongod --dbpath data` (if need be, `sudo killall mongod`) - OKAY √
 
 ## Instructions
