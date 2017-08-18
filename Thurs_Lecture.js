@@ -29,6 +29,7 @@ server.get('/accepted-answer/:soID', (req, res) => {
       sendUserError('No answer found at that ID', res);
       return;
     }
+    // res.json(answer);
     selectAnswerID = answer.acceptedAnswerID;
   })
   .then(() => {
