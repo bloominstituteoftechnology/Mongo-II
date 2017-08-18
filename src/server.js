@@ -21,32 +21,46 @@ server.get('/posts', (req, res) => {
 
 server.get('/accepted-answer/:soID', (req, res) => {
   const id = req.params.soID;
-  let acceptedAnswerID;
   Post.findOne({ soID: id })
-    .select('acceptedAnswerID')
     .exec((err, answer) => {
       if (err) {
         res.status(STATUS_SERVER_ERROR);
         res.json({ error: err });
         return;
       }
-      acceptedAnswerID = answer.acceptedAnswerID;
-    })
-    .then(() => {
-      Post.findOne({ soID: acceptedAnswerID }, (err, ans) => {
-        if (err) {
-          res.status(STATUS_SERVER_ERROR);
-          res.json({ error: err });
-          return;
-        }
-        res.json(ans);
-        return;
-      });
-    })
-    .catch((err) => {
-      res.status(STATUS_SERVER_ERROR);
-      res.json(err);
+      Post.findOne({ soID: answer.acceptedAnswerID })
+        .exec((error, ans) => {
+          if (error) {
+            res.status(STATUS_SERVER_ERROR);
+            res.json({ error });
+            return;
+          } else if (!ans) {
+            res.status(STATUS_USER_ERROR);
+            res.json({ error });
+            return;
+          }
+          res.json(ans);
+        });
     });
 });
+
+// server.get('/accepted-answer/:soID', (req, res) => {
+//   const { soID } = req.params;
+//   Post.findOne({ soID })
+//     .exec((err, post) => {
+//       if (!post) {
+//         sendUserError(err, res);
+//         return;
+//       }
+//       Post.findOne({ soID: post.acceptedAnswerID })
+//         .exec((error, answer) => {
+//           if (!answer) {
+//             sendUserError(error, res);
+//             return;
+//           }
+//           res.json(answer);
+//         });
+//     });
+// });
 
 module.exports = { server };
