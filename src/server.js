@@ -108,10 +108,12 @@ server.get('/npm-answers', (req, res) => {
       sendUserError(err, res);
       return;
     }
-    console.log(questions);
+    questions.forEach((obj) => {
+      idArr.push({ parentID: obj.soID });
+    });
     // for loop over the array to make a new array of just the ids
     // then you can do post.find(for(loop over array for IDs) do `or` operation)
-    Post.find({ parentID: { $or: questions } })
+    Post.find({ $or: idArr })
     .exec((error, answers) => {
       if (!answers) {
         sendUserError(error, res);
