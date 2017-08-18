@@ -24,19 +24,19 @@ server.get('/accepted-answer/:soID', (req, res) => {
   Post.findOne({ soID: id })
     .exec((err, answer) => {
       if (err) {
-        res.status(STATUS_SERVER_ERROR);
-        res.json({ error: err });
+        res.status(STATUS_USER_ERROR);
+        res.json(err);
         return;
       }
       Post.findOne({ soID: answer.acceptedAnswerID })
         .exec((error, ans) => {
           if (error) {
             res.status(STATUS_SERVER_ERROR);
-            res.json({ error });
+            res.json(error);
             return;
           } else if (!ans) {
             res.status(STATUS_USER_ERROR);
-            res.json({ error });
+            res.json(error);
             return;
           }
           res.json(ans);
