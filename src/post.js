@@ -30,12 +30,17 @@ const PostSchema = new mongoose.Schema({
     type: Number,
   },
   tags: {
-    type: Array,
+    type: [String],
   },
   acceptedAnswerID: {
     type: Number,
     default: null,
-  }
+  },
+  user: {
+    soUserID: Number,
+    name: String,
+    reputation: Number,
+  },
 });
 
-module.exports = mongoose.model('Post', PostSchema);
+module.exports = mongoose.model('Posts', PostSchema);

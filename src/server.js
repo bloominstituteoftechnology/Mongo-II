@@ -14,7 +14,6 @@ server.get('/posts', (req, res) => {
   Post.find({}, (err, results) => {
     if (err) {
       throw err;
-      return;
     }
     res.json(results);
   });
@@ -23,25 +22,31 @@ server.get('/posts', (req, res) => {
 server.get('/accepted-answer/:soID', (req, res) => {
   const id = req.params.soID;
   let acceptedAnswerID;
-  Post.find({soID:id})
+  Post.findOne({ soID: id })
     .select('acceptedAnswerID')
     .exec((err, answer) => {
       if (err) {
         res.status(STATUS_SERVER_ERROR);
-        res.json({error: err});
+        res.json({ error: err });
         return;
       }
-      acceptedAnswerID = (answer[0].acceptedAnswerID);
-    }).then(() => {
-    Post.find({ soID : acceptedAnswerID }, (err, ans) => {
-      if (err) {
-        res.status(STATUS_SERVER_ERROR);
-        res.json({error: err});
+      acceptedAnswerID = answer.acceptedAnswerID;
+    })
+    .then(() => {
+      Post.findOne({ soID: acceptedAnswerID }, (err, ans) => {
+        if (err) {
+          res.status(STATUS_SERVER_ERROR);
+          res.json({ error: err });
+          return;
+        }
+        res.json(ans);
         return;
-      }
-      console.log(ans);
-      res.json(ans[0]);
-    })});
+      });
+    })
+    .catch((err) => {
+      res.status(STATUS_SERVER_ERROR);
+      res.json(err);
+    });
 });
 
 module.exports = { server };
