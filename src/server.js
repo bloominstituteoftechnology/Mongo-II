@@ -10,6 +10,15 @@ server.use(bodyParser.json());
 
 // TODO: write your route handlers here
 
+const sendUserError = (err, res) => {
+  res.status(STATUS_USER_ERROR);
+  if (err === 'string') {
+    res.json({ error: err })
+  } else {
+    res.json(err)
+  };
+};
+
 server.get('/accepted-answer/:soID', (req, res) => {
   const { soID } = req.params;
   let acceptedAnswerID = 0;
