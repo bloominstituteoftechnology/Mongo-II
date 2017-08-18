@@ -6,7 +6,8 @@ mongoose.models = {};
 mongoose.modelSchemas = {};
 
 mongoose.Promise = Promise;
-mongoose.connect('mongodb://localhost/so-posts', { useMongoClient: true });
+// explicitly calling :27017         vvvvvv √
+mongoose.connect('mongodb://localhost:27017/so-posts', { useMongoClient: true });
 
 const PostSchema = new mongoose.Schema({
   // TODO: write your schema here
