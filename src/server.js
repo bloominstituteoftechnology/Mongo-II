@@ -31,27 +31,6 @@ server.get('/accepted-answer/:soID', (req, res) => {
   });
 });
 
-<<<<<<< HEAD
-server.get('/accepted-answer/:soID', (req, res) => {
-  const { soID } = req.params;
-  Post.findOne({ soID }, (err, post) => {
-    if (!post) {
-      res.status(STATUS_USER_ERROR);
-      res.json({ error: 'User Error in top-answer' });
-      return;
-    }
-    Post.find({ soID: post.acceptedAnswerID }, (error, answer) => {
-      if (!answer) {
-        res.status(STATUS_USER_ERROR);
-        res.json({ error: 'User Error in top-answer find' });
-        return;
-      }
-      res.json(answer);
-    });
-  });
-});
-
-=======
 server.get('/top-answer/:soID', (req, res) => {
   const { soID } = req.params;
   Post.findOne({ soID }, (err, post) => {
@@ -71,6 +50,35 @@ server.get('/top-answer/:soID', (req, res) => {
     });
   });
 });
->>>>>>> b0f14620fa48a2e9fa2f082dd935f799c7d93aab
+
+server.get('/popular-jquery-questions', (req, res) => {
+  Post.find({ $and: [{ tags: { $in: ['jquery'] } },
+            { $or: [{ score: { $gt: 5000 } }, { 'user.reputation': { $gt: 200000 } }] }] })
+    .exec((err, post) => {
+      if (!post) {
+        sendUserError(err, res);
+      } else {
+        res.json(post);
+      }
+    });
+});
+
+server.get('/npm-answers', (req, res) => {
+  Post.find({ tags: { $in: ['npm'] } })
+  .exec((err, post) => {
+    if (!post) {
+      sendUserError(err, res);
+      return;
+    }
+    Post.findOne({ post }, (errr, aanswer) => {
+      if (!aanswer) {
+        res.status(200);
+        res.json({ errr });
+        return;
+      }
+      res.json(aanswer);
+    });
+  });
+});
 
 module.exports = { server };
