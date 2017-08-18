@@ -11,23 +11,22 @@ server.use(bodyParser.json());
 // TODO: write your route handlers here
 server.get('/accepted-answer/:soID', (req, res) => {
   const { soID } = req.params;
-  Post.findOne({ soID })
-    .exec((err, post) => {
-      if (!post) {
+  Post.findOne({ soID }, (err, post) => {
+    if (!post) {
+      res.status(STATUS_USER_ERROR);
+      res.json({ error: 'User Error in accepted-answer' });
+      return;
+    }
+    Post.findOne({ soID: post.acceptedAnswerID }, (error, answer) => {
+      if (!answer) {
         res.status(STATUS_USER_ERROR);
-        res.json({ error: 'User Error in accepted-answer' });
+        res.json({ error: 'User Error in accepted-answer findOne' });
         return;
       }
-      Post.findOne({ soID: post.acceptedAnswerID })
-        .exec((error, answer) => {
-          if (!answer) {
-            res.status(STATUS_USER_ERROR);
-            res.json({ error: 'User Error in accepted-answer findOne' });
-            return;
-          }
-          res.json(answer);
-        });
+      res.json(answer);
     });
+  });
 });
+
 
 module.exports = { server };
