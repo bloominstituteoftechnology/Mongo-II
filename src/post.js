@@ -12,20 +12,19 @@ const PostSchema = new mongoose.Schema({
   soID: {
     type: Number,
     required: true,
-    // unique: true,
+    unique: true,
   },
   parentID: {
     type: Number,
-    // default: null,
+    default: null,
   },
   url: {
     type: String,
-    // required: true,
+    required: true,
   },
   title: {
     type: String,
-    // required: true,
-  },
+    },
   body: {
     type: String,
     required: true,
@@ -35,9 +34,7 @@ const PostSchema = new mongoose.Schema({
     required: true,
   },
   tags: {
-    type: [
-      String
-    ]
+    type: [String],
   },
   acceptedAnswerID: {
     type: Number,
