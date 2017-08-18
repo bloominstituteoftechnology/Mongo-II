@@ -15,11 +15,11 @@ const readPosts = () => {
   return savedPosts;
 };
 
-mongoose.Promise = global.Promise;
-mongoose.connect(
-  'mongodb://localhost/posts',
-  { useMongoClient: true }
-);
+// mongoose.Promise = global.Promise;
+// mongoose.connect(
+//   'mongodb://localhost/posts',
+//   { useMongoClient: true }
+// );
 
 const populatePosts = () => {
   // TODO: implement this
