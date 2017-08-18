@@ -4,6 +4,12 @@ const populatePosts = () => {
   return Promise.all(promises);
 };
 
+// Wesley's technique:
+const populatePosts = () => {
+  return Promise.all(readPosts().map(p => new Post(p).save()));
+};
+
+
 
 // GET
 
@@ -41,4 +47,24 @@ server.get('/accepted-answer/:soID', (req, res) => {
       res.json(ans);
     });
   });
+});
+
+// From Ryan:
+server.get('/accepted-answer/:soID', (req, res) => {
+  const { soID } = req.params;
+  Post.findOne({ soID })
+    .exec((err, post) => {
+      if (!post) {
+        sendUserError(err, res);
+        return;
+      }
+      Post.findOne({ soID: post.acceptedAnswerID })
+        .exec((error, answer) => {
+          if (!answer) {
+            sendUserError(error, res);
+            return;
+          }
+          res.json(answer);
+        });
+    });
 });
