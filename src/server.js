@@ -28,5 +28,29 @@ server.get('/accepted-answer/:soID', (req, res) => {
   });
 });
 
+server.get('/top-answer/:soID', (req, res) => {
+  const { soID } = req.params;
+  Post.findOne({ soID }, (err, post) => {
+    if (!post) {
+      res.status(STATUS_USER_ERROR);
+      res.json({ error: `User Error in top-answer with ${soID}` });
+      return;
+    }
+    Post.find({ $and: [{ parentID: soID }, { soID: { $ne: post.acceptedAnswerID } }] }, (error, answers) => {
+      if (!answers || !answers.length) {
+        res.status(STATUS_USER_ERROR);
+        res.json({ error: 'User Error in top-answer find' });
+        return;
+      }
+      const topAnswer = answers.reduce((ta, e) => {
+        if (e && ta) {
+          return e.score > ta.score ? e : ta;
+        }
+        return ta;
+      }, answers[0]);
+      res.json(topAnswer);
+    });
+  });
+});
 
 module.exports = { server };
