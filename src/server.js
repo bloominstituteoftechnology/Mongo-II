@@ -1,3 +1,4 @@
+// GOT IT?
 const bodyParser = require('body-parser');
 const express = require('express');
 const Post = require('./post');
