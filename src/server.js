@@ -52,9 +52,14 @@ server.get('/top-answer/:soID', (req, res) => {
 });
 
 server.get('/popular-jquery-questions', (req, res) => {
-  Post.find({ $and: [ {tags: { $in: ['jquery'] } }, { $or: [ { score: { $gt: 5000 } }, { 'user.reputation': { $gt: 200000 } } ]} ] }, (err, posts) => {
+  Post.find({
+    $and: [{ tags: { $in: ['jquery'] } }, {
+      $or: [{ score: { $gt: 5000 } }, {
+        'user.reputation': { $gt: 200000 } }]
+    }]
+  }, (err, posts) => {
     if (err) {
-      sendUserError({ error: 'User Error in popular-jquery-questions' });
+      sendUserError({ error: 'User Error in popular-jquery-questions' }, res);
       return;
     }
     res.json(posts);
@@ -62,17 +67,18 @@ server.get('/popular-jquery-questions', (req, res) => {
 });
 
 server.get('/npm-answers', (req, res) => {
-  Post.find({ tags: { $in: ['npm'] }}, (err, posts) => {
+  Post.find({ tags: 'npm' }, { soID: 1, _id: 0 }, (err, soids) => {
     if (err) {
-      sendUserError({ error: 'User Error in npm-answers' });
+      sendUserError({ error: 'User Error in npm-answers' }, res);
       return;
     }
-    Post.find({ parentID: { $in: { posts } } }, (error, answers) => {
-      if (error) {
+    const soidsArr = soids.map(e => e.soID);
+    Post.find({ parentID: { $in: soidsArr } }, (err2, answers) => {
+      if (err2) {
         sendUserError({ error: 'User Error in npm-answers find' });
         return;
       }
-      json(answers);
+      res.json(answers);
     });
   });
 });
