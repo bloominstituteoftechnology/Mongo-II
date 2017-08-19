@@ -2,6 +2,7 @@ const bodyParser = require('body-parser');
 const express = require('express');
 
 const STATUS_USER_ERROR = 422;
+const STATUS_OK = 200;
 const Post = require('./post.js');
 
 const server = express();
@@ -64,6 +65,7 @@ server.get('/popular-jquery-questions', (req, res) => {
 });
 
 server.get('/npm-answers', (req, res) => {
+  const { soID } = req.params;
   Post.find({ tags: { $in: ['npm'] } })
   .exec((err, post) => {
     if (!post) {
@@ -80,5 +82,6 @@ server.get('/npm-answers', (req, res) => {
     });
   });
 });
+
 
 module.exports = { server };
