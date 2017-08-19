@@ -35,7 +35,7 @@ const PostSchema = new mongoose.Schema({
   tags: {
     type: [String],
   },
-  acceptedAnswerID: number,
+  acceptedAnswerID: Number,
   user: {
     type: {
       soUserID: Number,

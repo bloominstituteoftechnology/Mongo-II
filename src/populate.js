@@ -21,23 +21,10 @@ const readPosts = () => {
 };
 
 const populatePosts = () => {
-  // TODO: implement this
-  const popPost = () => {
-    const allPosts = posts;
-    const promises = allPosts.map(p => new Post(p).save());
-    readPosts();
-    return Promise.all(promises);
-  };
-};
+  const allPosts = readPosts();
+  const promises = allPosts.map(p => new Post(p).save());
 
-populatePosts()
-.then(() => {
-  console.log('done');
-  mongoose.disconnect();
-})
-.catch((err) => {
-  console.log('error', err);
-  throw new Error(err);
-});
+  return Promise.all(promises);
+};
 
 module.exports = { readPosts, populatePosts };
