@@ -2,6 +2,7 @@ const bodyParser = require('body-parser');
 const express = require('express');
 
 const STATUS_USER_ERROR = 422;
+const STATUS_OK = 200;
 const Post = require('./post.js');
 
 const server = express();
