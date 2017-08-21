@@ -39,5 +39,32 @@ server.get('/accepted-answer/:soID', (req, res) => {
     });
 });
 
+server.get('/top-answer/:soID', (req, res) => {
+  const { soID } = req.params;
+  Post.findOne({ soID })
+    .exec((err, post) => {
+      if (!post) {
+        sendUserError(err, res);
+      } else {
+        const soIDv = soID;
+        const acceptedID = post.acceptedAnswerID;
+        Post.find({ parentID: { $eq: soID } })
+        .sort({ score: -1 })
+        .exec((errs, answers) => {
+          if (!answers) {
+            sendUserError(errs, res);
+            return;
+          }
+          for (let i = 0; i < answers.length; i++) {
+            if (answers[i].soID !== acceptedID) {
+              res.json(answers[i]);
+            }
+          }
+          sendUserError(err, res);
+        });
+      }
+    });
+});
+
 
 module.exports = { server };
