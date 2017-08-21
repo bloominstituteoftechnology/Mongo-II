@@ -67,24 +67,37 @@ server.get('/top-answer/:soID', (req, res) => {
 // Send back a JSON response with an array of popular jquery questions.
 
 server.get('/popular-jquery-questions', (req, res) => {
-  Post.find({}, (err, post) => {
+  Post.find({
+    parentID: null,
+    tags: 'jquery',
+    $or: [
+      { score: { $gt: 5000 } },
+      { 'user.reputation': { $gt: 200000 } }
+    ],
+  }).then((err, posts) => {
     if (err) {
-      res.status(STATUS_USER_ERROR);
-      res.json(err);
+      sendUserError(err, res);
       return;
     }
-    res.json(post);
-    // if (post.tags.includes('jquery') &&
-    //   post.score > 5000 &&
-    //   post.user.reputation > 200000) {
-    //   res.json(post);
-    // }
-    // post []
-    // .forEach {}
-    // obj[tags]
-    // .includes
-
+    res.json(posts);
   });
 });
+
+// server.get('/npm-answers', (req, res) => {
+//   Post.find({ parentID: null, tags: 'npm' }, (err, questions) => {
+//     if(err) {
+//       sendUserError(err, res);
+//       return;
+//     }
+//     if(questions.length === 0) {
+//       sendUserError("no quetions found", res);
+//       return;
+//     }
+
+//     const questionIDs = quetions.map(q => q.soID);
+//     Post.find({ parentID: { $in: questionIDs } })
+//   });
+// });
+
 
 module.exports = { server };
