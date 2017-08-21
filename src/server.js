@@ -79,4 +79,27 @@ server.get('/popular-jquery-questions', (req, res) => {
     });
 });
 
+server.get('/npm-answers', (req, res) => {
+  const idArr = [];
+  Post.find({ tags: 'npm' }, { soID: 1, _id: 0 })
+  .exec((err, questions) => {
+    if (!questions) {
+      sendUserError(err, res);
+      return;
+    }
+    questions.forEach((obj) => {
+      idArr.push({ parentID: obj.soID });
+    });
+    Post.find({ $or: idArr })
+    .exec((error, answers) => {
+      if (!answers) {
+        sendUserError(error, res);
+        return;
+      }
+      res.json(answers);
+    });
+  });
+});
+
+
 module.exports = { server };
