@@ -20,6 +20,7 @@ const sendUserError = (err, res) => {
   }
 };
 
+// See Karthik's solution
 server.get('/accepted-answer/:soID', (req, res) => {
   const { soID } = req.params;
   Post.findOne({ soID })
