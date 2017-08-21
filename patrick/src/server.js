@@ -173,29 +173,29 @@ server.get('/popular-jquery-questions', (req, res) => {
 //   });
 // });
 
-server.get('/npm-answers', (req, res) => {
-  const tagged = [];
-  Post.find({ tags: { $in: ['npm'] } })
-  .exec((err, post) => {
-    if (!post) {
-      sendUserError(err, res);
-      return;
-    }
-    // ids into array, iterate over array of ids and search whole db for posts w/ matching parentIDs
-    post.forEach((p) => {
-      tagged.push(p.soID);
-    });
-    console.log(tagged);
-    const answers = [];
-    tagged.forEach((id) => {
-      Post.find({ parentID: id })
-      .exec((err44, apost) => {
-        answers.push(apost);
-      });
-    });
-    res.json(tagged);
-  });
-});
+// server.get('/npm-answers', (req, res) => {
+//   const tagged = [];
+//   Post.find({ tags: { $in: ['npm'] } })
+//   .exec((err, post) => {
+//     if (!post) {
+//       sendUserError(err, res);
+//       return;
+//     }
+//     // ids into array, iterate over array of ids and search whole db for posts w/ matching parentIDs
+//     post.forEach((p) => {
+//       tagged.push(p.soID);
+//     });
+//     console.log(tagged);
+//     const answers = [];
+//     tagged.forEach((id) => {
+//       Post.find({ parentID: id })
+//       .exec((err44, apost) => {
+//         answers.push(apost);
+//       });
+//     });
+//     res.json(tagged);
+//   });
+// });
 
 // ### `GET /npm-answers`
 // When the client makes a `GET` request to `/npm-answers`:
@@ -203,5 +203,32 @@ server.get('/npm-answers', (req, res) => {
 // 2. Find all answers to all questions above (1 query).
 // 3. Send back a JSON response with an array of answers to npm questions.
 
+server.get('/npm-answers', (req, res) => {
+  const idArr = [];
+  // https://docs.mongodb.com/v3.2/reference/method/db.collection.find/#find-projection
+  Post.find({ tags: 'npm' }, { soID: 1, _id: 0 })
+  .exec((err, questions) => {
+    if (!questions) {
+      sendUserError(err, res);
+      return;
+    }
+    questions.forEach((obj) => {
+      idArr.push({ parentID: obj.soID });
+    });
+    // console.log(idArr);
+    // for loop over the array to make a new array of just the ids
+    // then you can do post.find(for(loop over array for IDs) do `or` operation)
+    // https://docs.mongodb.com/manual/reference/operator/query/or/
+    Post.find({ $or: idArr })
+    .exec((error, answers) => {
+      if (!answers) {
+        sendUserError(error, res);
+        return;
+      }
+      res.json(answers);
+      // console.log(answers);
+    });
+  });
+});
 
 module.exports = { server };
