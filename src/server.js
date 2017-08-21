@@ -53,15 +53,13 @@ server.get('/top-answer/:soID', (req, res) => {
 });
 
 server.get('/popular-jquery-questions', (req, res) => {
-  Post.find({ $and: [{ tags: { $in: ['jquery'] } },
-            { $or: [{ score: { $gt: 5000 } }, { 'user.reputation': { $gt: 200000 } }] }] })
-    .exec((err, post) => {
-      if (!post) {
-        sendUserError(err, res);
-      } else {
-        res.json(post);
-      }
-    });
+  Post.find({ $and: [{ tags: { $in: ['jquery'] } }, { $or: [{ score: { $gt: 5000 } }, { 'user.reputation': { $gt: 200000 } }] }] }, (err, posts) => {
+    if (err) {
+      sendUserError({ error: 'User Error in popular-jquery-questions' }, res);
+      return;
+    }
+    res.json(posts);
+  });
 });
 
 server.get('/npm-answers', (req, res) => {
