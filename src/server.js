@@ -65,11 +65,21 @@ server.get('/popular-jquery-questions', (req, res) => {
 });
 
 server.get('/npm-answers', (req, res) => {
-  const { soID } = req.params;
-  Post.find({ tags: { $in: ['npm'] } })
-  .exec((err, post) => {
-    if (!post) {
-
+  Post.find({ tags: 'npm' } , { soID: 1, _id: 0 }, (err, soids) => {
+    if (err) {
+      sendUserError({error: 'User Error in npm-answers' }, res);
+      return;
+    }
+    const soidsArr = soids.map(e => e.soID);
+    Post.find({ parentID: { $in: soidsArr } }, (err2, answers) => {
+    .exec((errr, answer) => {
+      if (err2) {
+        sendUserError({ error: 'User Error in npm-answers find' });
+        return;
+      }
+        res.json({answers});
+      }
+    });
   });
 });
 
