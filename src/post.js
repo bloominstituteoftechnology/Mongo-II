@@ -22,9 +22,7 @@ const PostSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  title: {
-    type: String,
-  },
+  title: String,
   body: {
     type: String,
     required: true,
@@ -33,9 +31,7 @@ const PostSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  tags: {
-    type: [String],
-  },
+  tags: [String],
   acceptedAnswerID: {
     type: Number,
     default: null,
