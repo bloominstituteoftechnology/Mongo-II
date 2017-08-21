@@ -69,19 +69,8 @@ server.get('/npm-answers', (req, res) => {
   Post.find({ tags: { $in: ['npm'] } })
   .exec((err, post) => {
     if (!post) {
-      sendUserError(err, res);
-      return;
-    }
-    Post.findOne({ post }, (errr, aanswer) => {
-      if (!aanswer) {
-        res.status(200);
-        res.json({ errr });
-        return;
-      }
-      res.json(aanswer);
-    });
+
   });
 });
-
 
 module.exports = { server };
