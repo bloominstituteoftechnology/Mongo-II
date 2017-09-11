@@ -27,10 +27,10 @@ server.get('/accepted-answer/:soID', (req, res) => {
     .exec((err, post) => {
       if (err) throw err;
       else {
-        Post.find({ soID: post.acceptedAnswerID })
-          .exec(() => {
-            if (err) throw err;
-            res.json(post);
+        Post.findOne({ soID: post.acceptedAnswerID })
+          .exec((newErr, newPost) => {
+            // if (err) throw err;
+            res.json(newPost);
           });
       }
     });
@@ -42,11 +42,11 @@ server.get('/top-answer/:soID', (req, res) => {
   Post.find({ soID })
     .exec((err, post) => {
       if (err) throw err;
-      Post.find({ soID: { $ne: post.acceptedAnswerID }, parentID: post.soID })
+      Post.findOne({ soID: { $ne: post.acceptedAnswerID }, parentID: post.soID })
       .sort({ score: 'desc' })
-      .exec(() => {
-        if (err) throw err;
-        res.json(post);
+      .exec((newErr, newPost) => {
+        if (newErr) throw err;
+        res.json(newPost);
       });
     });
 });
@@ -69,10 +69,11 @@ server.get('/npm-answers', (req, res) => {
     .exec((err, post) => {
       if (err) throw err;
       else {
-        Post.find({ parentID: post[0].soID })
-          .exec((newPost) => {
-            if (err) throw err;
-            res.json(post[0].soID);
+        const questionIDs = post.map(question => question.soID);
+        Post.find({ parentID: { $in: questionIDs } })
+          .exec((newErr, newPost) => {
+            if (newErr) throw err;
+            res.json(newPost);
           });
       }
     });
