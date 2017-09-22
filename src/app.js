@@ -1,7 +1,7 @@
 // Do NOT modify this file; make your changes in server.js.
 const mongoose = require('mongoose');
 const { server } = require('./server.js');
-const dbConnect = require('./dbConnect');
+const dbConnect = require('./utils/dbConnect');
 
 const port = process.env.PORT || 3000;
 

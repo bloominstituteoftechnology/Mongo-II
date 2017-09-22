@@ -2,8 +2,8 @@ const chai = require('chai');
 const chaiHTTP = require('chai-http');
 
 const { expectPost, expectPosts } = require('./helpers.js');
-const { populatePosts } = require('../src/populate.js');
-const Post = require('../src/post.js');
+const { populatePosts } = require('../src/utils/populate.js');
+const Post = require('../src/models/postModel.js');
 const server = require('../src/server.js');
 
 const STATUS_OK = 200;

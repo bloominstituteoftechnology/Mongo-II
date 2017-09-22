@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
 
-const { readPosts } = require('../src/populate.js');
+const { readPosts } = require('../src/utils/populate.js');
 
 let savedPostsByID = null;
 

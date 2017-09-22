@@ -1,7 +1,8 @@
-const Post = require('./post');
+// Post Model
+const Post = require('../models/postModel');
 
 // error generator
-const newError = require('./errors').newError;
+const newError = require('../utils/errors').newError;
 
 const getAcceptedAnswer = async (soID) => {
   if (Number(soID)) {

@@ -1,8 +1,8 @@
 const expect = require('chai').expect;
 
 const { expectPost } = require('./helpers.js');
-const { populatePosts, readPosts } = require('../src/populate.js');
-const Post = require('../src/post.js');
+const { populatePosts, readPosts } = require('../src/utils/populate.js');
+const Post = require('../src/models/postModel.js');
 
 describe('populatePosts()', () => {
   beforeEach(() => Post.remove({}));

@@ -1,7 +1,7 @@
 const fs = require('fs');
 const dbConnect = require('./dbConnect');
 
-const Post = require('./post');
+const Post = require('../models/postModel');
 
 let savedPosts = null;
 
