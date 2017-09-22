@@ -1,4 +1,5 @@
 const fs = require('fs');
+const Posts = require('./post');
 
 let savedPosts = null;
 
@@ -12,7 +13,9 @@ const readPosts = () => {
 };
 
 const populatePosts = () => {
-  // TODO: implement this
+  const posts = readPosts();
+  const promise = posts.map(post => new Posts(post).save());
+  return Promise.all(promise);
 };
 
 module.exports = { readPosts, populatePosts };
