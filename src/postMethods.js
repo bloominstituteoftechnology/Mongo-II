@@ -22,12 +22,12 @@ const getTopAnswer = async (soID) => {
   if (Number(soID)) {
     const origin = await Post.findOne({ soID });
     if (origin) {
-      const answer = await Post.find({
+      const answer = await Post.findOne({
         parentID: soID,
         soID: { $ne: origin.acceptedAnswerID }
-      }).limit(1).sort('-score');
-      if (answer[0]) {
-        return answer[0];
+      }).sort('-score');
+      if (answer) {
+        return answer;
       }
       return newError(422, 'Failed to find top answer post');
     }
@@ -52,9 +52,8 @@ const getNpmAnswers = async () => {
     tags: { $all: ['npm'] }
   });
   if (taggedNpm.length > 0) {
-    const parentIds = taggedNpm.map(post => post.soID);
     const answers = await Post.find({
-      parentID: { $in: parentIds }
+      parentID: { $in: taggedNpm.map(post => post.soID) }
     });
     if (answers.length > 0) {
       return answers;
