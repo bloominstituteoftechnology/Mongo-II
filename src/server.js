@@ -1,12 +1,10 @@
-const bodyParser = require('body-parser');
 const express = require('express');
-
-const STATUS_USER_ERROR = 422;
+const bodyParser = require('body-parser');
+const routes = require('./routes');
 
 const server = express();
-// to enable parsing of json bodies for post requests
-server.use(bodyParser.json());
 
-// TODO: write your route handlers here
+server.use(bodyParser.json());
+server.use('/', routes);
 
 module.exports = { server };
