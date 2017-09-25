@@ -4,10 +4,11 @@ const resError = require('../utils/errors').resError;
 // Post methods
 const PostMethods = require('../controllers/postController');
 
-// Success method
+// Send response method
 const sendResponse = (response, res) => !response.error
   ? res.json(response)
   : resError(response.error, res);
+
 
 const postRoutes = (server) => {
   // ### `GET /accepted-answer/:soID`

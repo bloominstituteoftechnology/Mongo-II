@@ -9,7 +9,7 @@ mongoose.modelSchemas = {};
 
 const UserSchema = new mongoose.Schema({
   soUserID: {
-    type: String,
+    type: Number,
     required: true,
     unique: true
   },

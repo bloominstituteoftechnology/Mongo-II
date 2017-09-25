@@ -28,7 +28,7 @@ const readPosts = () => {
 // };
 
 /* eslint no-return-await: 0 */
-// cuts about 30 seconds off the insert compared with given solution
+// cuts about .30 seconds off the insert compared with given solution
 const populatePosts = async () => await Post.insertMany(
   readPosts().map(post => new Post(post))
 );
