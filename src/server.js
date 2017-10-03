@@ -71,14 +71,28 @@ server.get('/popular-jquery-questions', (req, res) => {
 server.get('/npm-answers', (req, res) => {
   Post.find({
     parentID: null,
-    tags: 'npm'
-  }).exec((err, posts) => {
+    tags: 'npm',
+  }, (err, questions) => {
     if (err) {
       res.status(STATUS_USER_ERROR);
-      res.json({ 'No accepted post': err });
+      res.json(err);
+      return;
     }
-    Post.find({
-      parentID: { $in: posts }
+    if (questions.length === 0) {
+      res.status(STATUS_USER_ERROR);
+      res.json("Can't find any question");
+      return;
+    }
+
+    const questionsID = questions.map(q => q.soID);
+    const answerQuery = { parentID: { $in: questionsID } };
+    Post.find(answerQuery, (answerError, answers) => {
+      if (answerError) {
+        res.status(STATUS_USER_ERROR);
+        res.json(answerError);
+        return;
+      }
+      res.json(answers);
     });
   });
 });
