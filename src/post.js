@@ -10,7 +10,7 @@ mongoose.connect('mongodb://localhost/so-posts', { useMongoClient: true });
 
 const PostSchema = new mongoose.Schema({
   // TODO: write your schema here
-  soId: {
+  soID: {
     type: Number,
     required: true,
   },
@@ -19,7 +19,7 @@ const PostSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  ttile: String,
+  title: String,
   body: {
     type: String,
     required: true
@@ -28,7 +28,7 @@ const PostSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  tags: Array,
+  tags: [String],
   acceptedAnswerID: Number,
   user: {
     soUserID: Number,
