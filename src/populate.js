@@ -15,11 +15,6 @@ const readPosts = () => {
 
 const populatePosts = () => {
   // TODO: implement this
-  const posts = readPosts();
-  const postPromises = posts.map((post) => {
-    return new Post(post).save();
-  });
-  return Post.all(postPromises);
 };
 
 module.exports = { readPosts, populatePosts };
