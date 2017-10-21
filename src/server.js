@@ -60,8 +60,7 @@ server.get('/popular-jquery-questions', (req, res) => {
   Post.find({}, (err, questions) => {
     if (err) return res.status(STATUS_SERVER_ERROR).json(err);
     const filteredQuestions = questions.filter((q) => {
-      if (q.user === null) return;
-      return (q.tags.includes('jquery') && (q.score > 5000 || q.user.reputation > 200000));
+      return (q.tags.includes('jquery') && q.user !== null && (q.score > 5000 || q.user.reputation > 200000));
     });
     res.json(filteredQuestions);
   });
@@ -74,7 +73,7 @@ server.get('/npm-answers', (req, res) => {
     questions.forEach((q) => {
       if (q.tags.includes('npm')) qIDs.push(q.soID);
     });
-    Post.find({ parentID:{ $ne: null }}, (e, answers) => {
+    Post.find({ parentID: { $ne: null } }, (e, answers) => {
       if (e) return res.status(STATUS_SERVER_ERROR).json(e);
       const filteredAnswers = answers.filter((a) => {
         return qIDs.includes(a.parentID) && a.soID !== 5232;
