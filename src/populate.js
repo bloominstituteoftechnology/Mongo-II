@@ -14,9 +14,9 @@ const readPosts = () => {
   return savedPosts;
 };
 
-const populatePosts = () => {
+const populatePosts = async () => {
   const posts = readPosts();
-  const promise = posts.map(post => new Post(post).save());
+  const promise = await Post.create(posts.map(post => post));
   return Promise.all(promise);
 };
 
