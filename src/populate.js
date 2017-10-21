@@ -1,4 +1,5 @@
 const fs = require('fs');
+const mongoose = require('mongoose');
 
 let savedPosts = null;
 
@@ -13,8 +14,10 @@ const readPosts = () => {
   return savedPosts;
 };
 
-const populatePosts = () => {
-  // TODO: implement this
+const populatePosts = async () => {
+  const posts = readPosts();
+  const promise = await Post.insertMany(posts);
+  return Promise.all(promise);
 };
 
 module.exports = { readPosts, populatePosts };
