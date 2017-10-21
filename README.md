@@ -26,8 +26,7 @@ about StackOverflow questions:
   to automatically re-reun the tests when you make modifications.
 - To test your application in your browser, or by using
   [Postman](https://www.getpostman.com/), make sure you've installed `nodemon`
-  via `npm install -g nodemon` and then run `nodemon src/app.js`. `nodemon` will
-  keep the server running and automatically restart it if you change anything.
+  via `npm install -g nodemon` and then run `nodemon src/app.js`. `nodemon` will keep the server running and automatically restart it if you change anything.
   You can now make requests to `http://localhost:3000` in your browser or
   Postman!
 - Make modifications to `src/populate.js` and `src/server.js` to make the tests
@@ -37,8 +36,7 @@ about StackOverflow questions:
 - Once all tests have passed, you're done! Send us a pull request.
 
 ## Instructions
-StackOverflow questions and answers are *both* represented as post objects. Here
-are two example posts from `posts.json`, your dataset of StackOverflow posts.
+StackOverflow questions and answers are *both* represented as post objects. Here are two example posts from `posts.json`, your dataset of StackOverflow posts.
 The first post is a question, whereas the second is an answer:
 
 ```js
