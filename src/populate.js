@@ -16,7 +16,7 @@ const readPosts = () => {
 
 const populatePosts = async () => {
   const posts = readPosts();
-  const promise = await Post.create(posts.map(post => post));
+  const promise = await Post.insertMany(posts);
   return Promise.all(promise);
 };
 
