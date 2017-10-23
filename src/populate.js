@@ -1,4 +1,5 @@
 const fs = require('fs');
+const mongoose = require('mongoose');
 
 let savedPosts = null;
 
@@ -12,9 +13,20 @@ const readPosts = () => {
   }
   return savedPosts;
 };
-
 const populatePosts = () => {
-  // TODO: implement this
+  const posts = readPosts();
+  const promises = posts.map(post => new Post(post).save());
+  return Promise.all(promises);
 };
+
+populatePosts()
+  .then(() => {
+    // console.log('done');
+    mongoose.disconnect();
+  })
+  .catch((err) => {
+    // console.log('ERROR', err);
+    throw new Error(err);
+  });
 
 module.exports = { readPosts, populatePosts };
