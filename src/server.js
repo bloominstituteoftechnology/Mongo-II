@@ -4,8 +4,14 @@ const express = require('express');
 const Post = require('./post.js');
 
 const STATUS_USER_ERROR = 422;
+
 const handleError = (error, req, res, next) => {
   res.status(STATUS_USER_ERROR).send({ error, message: "Oops! Looks like that doesn't work :(" });
+};
+
+const asyncMiddleware = cb => (req, res, next) => {
+  // express was refusing to use my middlware in server.use(handleError)
+  Promise.resolve(cb(req, res, next)).catch(next);
 };
 
 /*
@@ -17,13 +23,6 @@ base_url = 'localhost:3000'
 const server = express();
 // to enable parsing of json bodies for post requests
 server.use(bodyParser.json());
-server.use(handleError);
-
-const asyncMiddleware = cb => (req, res, next) => {
-  // express was refusing to use my middlware in server.use(handleError)
-  Promise.resolve(cb(req, res, next)).catch(error => handleError(error, req, res, next));
-};
-
 
 /*
 get(base_url + '/questions')
@@ -37,7 +36,7 @@ server.get('/questions', asyncMiddleware(async (req, res, next) => {
 }));
 
 /*
-get(base_url + '/question/' + '208105')
+get(base_url + '/question/' + 'bad')
 */
 server.get('/question/:soID', asyncMiddleware(async (req, res, next) => {
   const question = await Post.findOne({ parentID: null, soID: req.params.soID });
@@ -111,5 +110,7 @@ server.get('/npm-answers', asyncMiddleware(async (req, res, next) => {
   }
   res.send(answers);
 }));
+
+server.use(handleError);
 
 module.exports = { server };
