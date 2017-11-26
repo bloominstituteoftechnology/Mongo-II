@@ -47,10 +47,52 @@ server.get('/accepted-answer/:soID', (req, res) => {
           });
         })
         .catch((err) => {
-          catchLog(`soID not found: ${err}`);
+          catchLog(`soID ${soID} not found: ${err}`);
           res.status(statusCodes.userError).json(`soID not found: ${err}`);
         });
 });
-server.get('/top-answer/:soID', (req, res)
+server.get('/top-answer/:soID', (req, res) => {
+  const soID = req.params.soID;
+  Post.findOne()
+          .where('soID').equals(soID)
+          .select('acceptedAnswerID')
+          .exec()
+          .then((ids, err) => {
+            if (err) {
+              throw (err);
+            }
+            if (!ids) {
+              throw new Error(`soID ${soID} not found`);
+            }
+            const aid = ids.acceptedAnswerID == null ? -1 : ids.acceptedAnswerID;
+            Post.find()
+            .where('parentID').equals(soID)
+            .where('soID')
+            .ne(aid)
+            .sort({ score: 'desc' })
+            .exec()
+            .then((posts, perr) => {
+              if (perr) {
+                throw perr;
+              }
+              if (!posts || posts.length === 0) {
+                throw new Error(`soID ${soID} no answers found`);
+              }
+              res.json(posts[0]);
+            })
+            .catch((uerr) => {
+              catchLog(`soID ${soID} answer not found: ${uerr}`);
+              res.status(statusCodes.userError).json(`answer not found: ${uerr}`);
+            });
+          })
+          .catch((err) => {
+            catchLog(`soID ${soID} not found: ${err}`);
+            res.status(statusCodes.userError).json(`soID not found: ${err}`);
+          });
+});
+server.get('/popular-jquery-questions', (req, res) => {
+  Post.find()
+  .where({})
+});
 
 module.exports = { server };
