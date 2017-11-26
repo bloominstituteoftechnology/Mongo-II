@@ -92,7 +92,23 @@ server.get('/top-answer/:soID', (req, res) => {
 });
 server.get('/popular-jquery-questions', (req, res) => {
   Post.find()
-  .where({})
+  .where({ tags: { $elemMatch: { $eq: 'jquery' } } })
+  .where({ $or: [{ score: { $gt: 5000 } }, { 'user.reputation': { $gt: 200000 } }] })
+  .where('parentID')
+  .equals(null)
+  .exec()
+  .then((posts, err) => {
+    if (err) {
+      throw err;
+    }
+    if (!posts || posts.length === 0) {
+      throw new Error('no jquery questions found');
+    }
+    res.json(posts);
+  })
+  .catch((err) => {
+    res.status(statusCodes.serverError).json('failed to get jquery questions');
+  });
 });
 
 module.exports = { server };
