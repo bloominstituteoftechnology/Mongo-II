@@ -111,4 +111,44 @@ server.get('/popular-jquery-questions', (req, res) => {
   });
 });
 
+server.get('/npm-answers', (req, res) => {
+  Post.find()
+    .where({ tags: { $elemMatch: { $eq: 'npm' } } })
+    .where('parentID')
+    .equals(null)
+    .select('soID -_id')
+    .exec()
+    .then((posts, err) => {
+      if (err) {
+        throw err;
+      }
+      if (!posts || posts.length === 0) {
+        throw new Error('no npm questions found');
+      }
+      Post.find()
+        .where('parentID')
+        .in(
+            posts.map(post => post.soID)
+        )
+        .exec()
+        .then((aposts, aerr) => {
+          if (aerr) {
+            throw err;
+          }
+          if (!aposts || aposts.length === 0) {
+            throw new Error('no npm answers found');
+          }
+          res.json(aposts);
+        })
+        .catch((uerr) => {
+          catchLog(`npm answers not found: ${uerr}`);
+          res.status(statusCodes.userError).json(`npm answers not found: ${uerr}`);
+        });
+    })
+    .catch((err) => {
+      catchLog(`npm questions not found: ${err}`);
+      res.status(statusCodes.userError).json(`no npm questions found: ${err}`);
+    });
+});
+
 module.exports = { server };
