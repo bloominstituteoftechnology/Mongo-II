@@ -18,9 +18,16 @@ mongoose.Promise = global.Promise;
 
 server.get('/accepted-answer/:soID', (req, res) => {
     const { soID } = req.params;
-    // Post.find('soID', soID).exec((err, posts) => {
-    //     if (err)
-    // })
-})
+    Post
+        .find({ soID: soID })
+        .select('acceptedAnswerID')
+        .exec((err, answer) => {
+            if (err) {
+                res.status(STATUS_USER_ERROR).json({ 'Error: ': err });
+                return;
+            }
+            res.json(answer);
+        });
+});
 
 module.exports = { server };

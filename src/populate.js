@@ -24,7 +24,7 @@ const Populate = () => {
   const populatePosts = () => {
   // TODO: implement this
     const allPosts = Post;
-    const promises = allPosts.mapReduce( p => new Post(p).save());
+    const promises = allPosts.map( p => new Post(p).save());
     return Promise.all(promises);
   };
 
