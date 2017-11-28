@@ -63,4 +63,24 @@ server.get('/popular-jquery-questions', (req, res) => {
     });
 });
 
+server.get('/npm-answers', (req, res) => {
+  Post.find({ tags: { $in: ['npm'] } }, (err, qPosts) => {
+    if (err || qPosts.length === 0) {
+      res.status(STATUS_USER_ERROR).json(err);
+      return;
+    }
+    const soIDArr = [];
+    for (let i = 0; i < qPosts.length; i++) {
+      soIDArr.push(qPosts[i].soID);
+    }
+    Post.find({ parentID: { $in: soIDArr } }, (err2, aPosts) => {
+      if (err2 || aPosts.length === 0) {
+        res.status(STATUS_USER_ERROR).json(err2);
+        return;
+      }
+      res.json(aPosts);
+    });
+  });
+});
+
 module.exports = { server };
