@@ -7,7 +7,7 @@ const Post = require('./post.js');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(
-  `mongodb://localhost/posts`,
+  'mongodb://localhost/so-posts',
   { useMongoClient: true }
 );
 
@@ -20,23 +20,12 @@ const readPosts = () => {
   return savedPosts;
 };
 
-const Populate = () => {
-  const populatePosts = () => {
-  // TODO: implement this
-    const allPosts = Post;
-    const promises = allPosts.map( p => new Post(p).save());
-    return Promise.all(promises);
-  };
 
-  return populatePosts()
-    .then(() => {
-      console.log('done');
-      mongoose.disconnect();
-    })
-    .catch((err) => {
-      console.log('ERROR', err);
-      throw new Error(err);
-    });
+const populatePosts = () => {
+  // TODO: implement this
+  const posts = readPosts();
+  const promises = allPosts.map(p => new Post(p).save());
+  return Promise.all(promises);
 };
 
-module.exports = { readPosts, Populate };
+module.exports = { readPosts, populatePosts };

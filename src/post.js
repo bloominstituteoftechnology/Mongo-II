@@ -39,7 +39,7 @@ const PostSchema = new mongoose.Schema({
     type: Number
   },
   user: {
-    soUserID: { 
+    soUserID: {
       type: Number
     },
     name: {
