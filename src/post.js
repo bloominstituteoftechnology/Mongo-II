@@ -39,10 +39,10 @@ const PostSchema = new mongoose.Schema({
     required: false,
   },
   user: {
-        soUserID: Number,
-        name: String,
-        reputation: Number,
-    },
+    soUserID: Number,
+    name: String,
+    reputation: Number,
+  },
 });
 
 module.exports = mongoose.model('Posts', PostSchema);

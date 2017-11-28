@@ -15,12 +15,10 @@ server.get('/accepted-answer/:soID', (req, res) => {
   const { soID } = req.params;
   Post.findOne({ soID }, (err1, foundPost) => {
     if (err1 || !foundPost === null) {
-      res.status(STATUS_USER_ERROR).json(err1)
+      res.status(STATUS_USER_ERROR).json(err1);
       return;
     }
-    Post.findOne(
-      { soID: foundPost.acceptedAnswerID },
-      (err2, acceptedAnswer) => {
+    Post.findOne({ soID: foundPost.acceptedAnswerID }, (err2, acceptedAnswer) => {
       if (err2 || acceptedAnswer === null) {
         res.status(STATUS_USER_ERROR).json(err2);
         return;
@@ -28,7 +26,26 @@ server.get('/accepted-answer/:soID', (req, res) => {
       res.json(acceptedAnswer);
     },
   );
+  });
 });
+
+server.get('/top-answer/:soID', (req, res) => {
+  const { soID } = req.params;
+  let highScore = 0;
+  Post.findOne({ soID }, (err1, foundPost) => {
+    if (err1 || !foundPost === null) {
+      res.status(STATUS_USER_ERROR).json(err1);
+      return;
+    }
+    Post.find({ soID: foundPost.acceptedAnswerID }, (err2, acceptedAnswer) => {
+      if (err2 || acceptedAnswer === null) {
+        res.status(STATUS_USER_ERROR).json(err2);
+        return;
+      }
+      res.json(acceptedAnswer);
+    },
+  );
+  });
 });
 
 module.exports = { server };
