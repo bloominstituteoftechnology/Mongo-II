@@ -11,6 +11,10 @@ const server = express();
 
 server.use(bodyParser.json());
 
+const errHandler = (res, error) => {
+  res.status(STATUS_USER_ERROR).json({ error });
+};
+
 // TODO: write your route handlers here
 server.get('/accepted-answer/:soID', (req, res) => {
   const { soID } = req.params;
@@ -18,14 +22,11 @@ server.get('/accepted-answer/:soID', (req, res) => {
   Post.findOne({ soID })
     .select('acceptedAnswerID')
     .exec((err1, post) => {
-      if (err1 || post === null) {
-        return res.status(STATUS_USER_ERROR).json('Bad ID');
-      }
+      if (err1 || !post) return errHandler(res, 'badID');
 
       Post.findOne({ soID: post.acceptedAnswerID }, (err2, answer) => {
-        if (err2 || answer === null) {
-          return res.status(STATUS_USER_ERROR).json('no accepted answer');
-        }
+        if (err2 || !answer) return errHandler(res, 'no accepted answer');
+
         res.status(STATUS_SUCCESS).json(answer);
       });
     });
@@ -37,48 +38,43 @@ server.get('/top-answer/:soID', (req, res) => {
   Post.findOne({ soID })
     .select('acceptedAnswerID')
     .exec((err1, answerID) => {
-      if (err1) return res.status(STATUS_USER_ERROR).json('bad id');
+      if (err1) return errHandler(res, 'bad ID');
 
-      Post.find({ parentID: soID })
+      Post.findOne({ soID: { $ne: answerID.acceptedAnswerID }, parentID: soID })
         .sort({ score: 'desc' })
-        .exec((err2, posts) => {
-          if (err2 || posts.length === 0) {
-            return res.status(STATUS_USER_ERROR).json('no top answer');
-          }
-          const foundpost = posts.find(post => post.soID !== answerID.acceptedAnswerID);
-          return res.status(STATUS_SUCCESS).json(foundpost);
+        .exec((err2, post) => {
+          if (err2 || !post) return errHandler(res, 'no top answer');
+
+          res.status(STATUS_SUCCESS).json(post);
         });
     });
 });
 
 server.get('/popular-jquery-questions', (req, res) => {
   Post.find({
-    $and: [
-      { tags: { $in: ['jquery'] } },
-      { $or: [
-        { score: { $gt: 5000 } },
-        { 'user.reputation': { $gt: 200000 } }
-      ] }
-    ]
-  }, (err, posts) => {
-    if (err) return res.status(STATUS_USER_ERROR).json('no posts found');
-    return res.status(STATUS_SUCCESS).json(posts);
-  });
+    tags: 'jquery',
+    $or: [{ score: { $gt: 5000 } }, { 'user.reputation': { $gt: 200000 } }],
+  })
+    .exec((err, posts) => {
+      if (err) return errHandler(res, 'no posts found');
+
+      res.status(STATUS_SUCCESS).json(posts);
+    });
 });
 
 server.get('/npm-answers', (req, res) => {
-  Post.find({ tags: { $in: ['npm'] } })
+  Post.find({ tags: 'npm' })
     .select('soID')
     .exec((err, posts) => {
-      if (err || posts.length === 0) {
-        return res.status(STATUS_USER_ERROR).json('no posts found');
-      }
-      const arrPosts = posts.map(val => val.soID);
-      Post.find({ parentID: { $in: arrPosts } }, (err2, answers) => {
-        if (err) return res.status(STATUS_USER_ERROR).json('err');
-        const test = answers.map(answer => [answer.soID, answer.parentID]);
-        return res.status(STATUS_SUCCESS).json(answers);
-      });
+      if (err || posts.length === 0) return errHandler(res, 'no posts found');
+
+      posts = posts.map(val => val.soID);
+
+      Post.find({ parentID: { $in: posts } })
+        .exec((err2, answers) => {
+          if (err2) return errHandler(res, err2.message);
+          return res.status(STATUS_SUCCESS).json(answers);
+        });
     });
 });
 module.exports = { server };
