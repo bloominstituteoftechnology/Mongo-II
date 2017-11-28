@@ -13,20 +13,29 @@ server.use(bodyParser.json());
 // TODO: write your route handlers here
 server.get('/accepted-answer/:soID', (req, res) => {
   const { soID } = req.params;
-  Post.find({ soID })
+  Post.findOne({ soID })
     .select('acceptedAnswerID')
     .exec((err, post) => {
       if (err) res.status(STATUS_USER_ERROR);
       else return post;
     })
     .then((answerID) => {
-      Promise.all(answerID);
-      // console.log(answerID[0].acceptedAnswerID);
-      Post.findOne({ soID: answerID[0].acceptedAnswerID }, (err, post) => {
+      Post.findOne({ soID: answerID.acceptedAnswerID }, (err, post) => {
         if (err) res.status(STATUS_USER_ERROR);
         else return res.json(post);
       });
     });
 });
-
+server.get('/top-answer/:soID', (req, res) => {
+  const { soID } = req.params;
+  Post.find({ parentID: soID })
+    .sort({ score: -1})
+    .exec((err, post) => {
+      if (err) res.status(STATUS_USER_ERROR);
+      else return post;
+    })
+    .then((scores) => {
+      res.json(scores[0]);
+    });
+});
 module.exports = { server };
