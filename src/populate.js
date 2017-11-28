@@ -15,17 +15,9 @@ const readPosts = () => {
 };
 
 const populatePosts = () => {
-  // TODO: implement this
-  // const populate = () => {
   const posts = readPosts();
-  // Promise.all(posts);
   const promises = posts.map(post => new Post(post).save());
   return Promise.all(promises);
-  // };
-  // return populate()
-  //   .then(() => { mongoose.disconnect(), console.log('done'); })
-  //   .catch(err => console.log(err), mongoose.disconnect());
 };
-// populatePosts();
 
 module.exports = { readPosts, populatePosts };

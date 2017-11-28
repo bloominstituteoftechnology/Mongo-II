@@ -57,22 +57,6 @@ server.get('/top-answer/:soID', (req, res) => {
           }
         });
     });
-  // Post.find({ parentID: soID })
-  //   .sort({ score: -1 })
-  //   .exec((err, posts) => {
-  //     if (err) res.status(STATUS_USER_ERROR);
-
-  //     for (let i = 0; i < scores.length; i++) {
-  //       if posts[i].acceptedAnswerID
-  //     }
-
-  //   })
-  //   .then((scores) => {
-  //     for (let i = 0; i < scores.length; i++) {
-
-  //     }
-  //     res.json(scores[0]);
-  //   });
 });
 server.get('/popular-jquery-questions', (req, res) => {
   Post.find({ $and: [{ tags: { $in: ['jquery'] } }] });
