@@ -59,10 +59,26 @@ server.get('/popular-jquery-questions', (req, res) => {
         { score: { $gt: 5000 } },
         { 'user.reputation': { $gt: 200000 } }
       ] }
-    ] })
+    ]
+  }, (err, posts) => {
+    if (err) return res.status(STATUS_USER_ERROR).json('no posts found');
+    return res.status(STATUS_SUCCESS).json(posts);
+  });
+});
+
+server.get('/npm-answers', (req, res) => {
+  Post.find({ tags: { $in: ['npm'] } })
+    .select('soID')
     .exec((err, posts) => {
-      if (err) return res.status(STATUS_USER_ERROR).json('no posts found');
-      return res.status(STATUS_SUCCESS).json(posts);
+      if (err || posts.length === 0) {
+        return res.status(STATUS_USER_ERROR).json('no posts found');
+      }
+      const arrPosts = posts.map(val => val.soID);
+      Post.find({ parentID: { $in: arrPosts } }, (err2, answers) => {
+        if (err) return res.status(STATUS_USER_ERROR).json('err');
+        const test = answers.map(answer => [answer.soID, answer.parentID]);
+        return res.status(STATUS_SUCCESS).json(answers);
+      });
     });
 });
 module.exports = { server };

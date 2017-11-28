@@ -83,7 +83,6 @@ describe('Request', () => {
     this.timeout(50000);
     return Post.remove({}).then(populatePosts);
   });
-  /*
   describe('GET /accepted-answer/:soID', () => {
     it('returns the accepted answer', () => {
       return get('/accepted-answer/2067472', STATUS_OK)
@@ -113,7 +112,6 @@ describe('Request', () => {
       return get('/top-answer/31392914', STATUS_USER_ERROR);
     });
   });
-  */
 
   describe('GET /popular-jquery-questions', () => {
     it('returns popular jquery questions', () => {
@@ -121,7 +119,7 @@ describe('Request', () => {
         .then(posts => expectPosts([503093, 178325, 14994391], posts));
     });
   });
-/*
+
   describe('GET /npm-answers', () => {
     it('returns answers to npm questions', () => {
       const expectedPostIDs = [
@@ -149,5 +147,4 @@ describe('Request', () => {
         .then(posts => expectPosts(expectedPostIDs, posts));
     });
   });
-  */
 });
