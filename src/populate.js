@@ -1,8 +1,11 @@
 const fs = require('fs');
+const posts = require('../posts');
+const mongoose = require('mongoose');
+const Post = require('./post.js');
 
 let savedPosts = null;
 
-const Post = require('./post.js');
+mongoose.Promise = global.Promise;
 
 const readPosts = () => {
   // cache posts after reading them once
@@ -14,7 +17,23 @@ const readPosts = () => {
 };
 
 const populatePosts = () => {
-  // TODO: implement this
+  const populateAll = () => {
+    const allPosts = posts;
+    const promises = allPosts.map(post => new Post(post).save());
+    return Promise.all(promises);
+  };
+
+  return populateAll()
+    .then(() => {
+      console.log('done');
+      mongoose.disconnect();
+    })
+    .catch((err) => {
+      console.log('ERROR', err);
+      throw new Error(err);
+    });
 };
+
+populatePosts();
 
 module.exports = { readPosts, populatePosts };
