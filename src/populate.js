@@ -16,7 +16,7 @@ const readPosts = () => {
   if (!savedPosts) {
     const contents = fs.readFileSync('posts.json', 'utf8');
     savedPosts = JSON.parse(contents);
-  }
+  } 
   return savedPosts;
 };
 
