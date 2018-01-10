@@ -11,5 +11,6 @@ const server = express();
 server.use(bodyParser.json());
 
 // TODO: write your route handlers here
+server.use('/', routes);
 
 module.exports = { server };
