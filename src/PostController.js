@@ -60,11 +60,11 @@ function getNpmAnswers(req, res) {
     // Take the IDs of all posts that were found
     const IDs = posts.map(post => post.soID);
 
+    // Query the posts for all answers of each question
     return Posts.find({ parentID: { $in: IDs } });
   }).then((answers) => {
     if (!answers.length) throw new Error('No answers found');
-    // Promise.all will return an array of answers for each question
-    // Flatten them into a single array of answers for the API
+
     res.status(200).json(answers);
   }).catch((err) => {
     res.status(422).json({ error: err.message });
