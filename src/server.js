@@ -45,7 +45,11 @@ server.get('/top-answer/:soID', (req, res) => {
 });
 
 server.get('/popular-jquery-questions', (req, res) => {
-  Post.find({ tags: 'jquery' }).or([{ score: { $gt: 5000 } }, { 'user.reputation': { $gt: 200000 } }])
+  Post.find({ tags: { $in: ['jquery'] } })
+    .or([
+      { score: { $gt: 5000 } }, 
+      { 'user.reputation': { $gt: 200000 } }
+    ])
     .then((questions) => {
       if (questions.length === 0) throw new Error('No questions found');
       res.status(200).json(questions);
@@ -56,7 +60,7 @@ server.get('/popular-jquery-questions', (req, res) => {
 });
 
 server.get('/npm-answers', (req, res) => {
-  Post.find({ tags: 'npm' })
+  Post.find({ tags: { $in: ['npm'] } })
     .then((questions) => {
       if (questions.length === 0) throw new Error('No questions found');
       const soIDs = [];
