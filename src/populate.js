@@ -15,8 +15,7 @@ const readPosts = () => {
 
 const populatePosts = () => {
   // TODO: implement this
-  const posts = readPosts();
-  const promises = posts.map(p => new Post(p).save());
+  const promises = savedPosts.map(p => new Post(p).save());
   return Promise.all(promises);
 };
 
