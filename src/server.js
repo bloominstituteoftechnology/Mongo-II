@@ -33,23 +33,70 @@ server.get('/accepted-answer/:soID', (req, res) => {
     });
 });
 
+// server.get('/top-answer/:soID', (req, res) => {
+//   const { soID } = req.params;
+//   Post.findOne({ soID })
+//     .then((answer) => {
+//       const newID = answer.parentID;
+//       Post.findOne.where({ acceptedAnswerID: null })({ parentID: newID })
+//         .sort('-score')
+//         .then((answers) => {
+//           res.status(200).json(answers);
+//         })
+//         .catch((err) => {
+//           res.status(422).json(err);
+//         });
+//     })
+//     .catch((err) => {
+//       res.status(422).json(err);
+//     });
+// });
 server.get('/top-answer/:soID', (req, res) => {
   const { soID } = req.params;
-  Post.findOne({ soID })
+  Post.findOne({ soID, parentID: { $type: 10 } })
     .then((answer) => {
-      const newID = answer.parentID;
-      Post.findOne({ parentID: newID })
+      const newID = answer.soID;
+      Post.findOne({ parentID: newID, acceptedAnswerID: null })
         .sort('-score')
+        .then((HighScoreAnswer) => {
+          res.status(200).json(HighScoreAnswer);
+        })
+        .catch((err) => {
+          res.status(422).json(err);
+        });
+    })
+    .catch((err) => {
+      res.status(422).json(err);
+    });
+});
+
+server.get('/popular-jquery-questions', (req, res) => {
+  Post.find({ tags: 'jquery', $or: [{ score: { $gt: 5000 } }, { 'user.reputation': { $gt: 200000 } }] })
+  .then((answer) => {
+    res.status(200).json(answer);
+  })
+  .catch((error) => {
+    res.status(422).error(error);
+  });
+});
+
+server.get('/npm-answers', (req, res) => {
+  Post.find({ tags: 'npm' })
+    .then((found) => {
+      const id1 = found[0].soID;
+      const id2 = found[1].soID;
+      Post.find({ $or: [{ parentID: id1 }, { parentID: id2 }] })
         .then((answers) => {
           res.status(200).json(answers);
         })
         .catch((err) => {
           res.status(422).json(err);
         });
-        
     })
     .catch((err) => {
       res.status(422).json(err);
     });
 });
+// {$or:[{parentID:18641899},{parentID:22343224}]}
+
 module.exports = { server };

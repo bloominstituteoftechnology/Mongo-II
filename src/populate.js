@@ -20,11 +20,5 @@ const populatePosts = () => {
 };
 
 populatePosts();
-  // .then((message) => {
-  //   res.status(200).json({ message: 'hello' });
-  // })
-  // .catch((err) => {
-  //   console.log(err);
-  // })
 
 module.exports = { readPosts, populatePosts };
