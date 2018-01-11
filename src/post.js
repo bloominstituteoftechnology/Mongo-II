@@ -5,11 +5,36 @@ const mongoose = require('mongoose');
 mongoose.models = {};
 mongoose.modelSchemas = {};
 
-mongoose.Promise = Promise;
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/so-posts', { useMongoClient: true });
 
 const PostSchema = new mongoose.Schema({
   // TODO: write your schema here
+  SoID: {
+    type: Number,
+    required: true
+  },
+  parentId: Number,
+  url: {
+    type: String,
+    required: true
+  },
+  title: String,
+  body: {
+    type: String,
+    required: true
+  },
+  score: {
+    type: Number,
+    required: true
+  },
+  tags: Array,
+  acceptedAnswerID: Number,
+  user: {
+    soUserID: Number,
+    name: String,
+    reputation: Number
+  }
 });
 
 module.exports = mongoose.model('Posts', PostSchema);
