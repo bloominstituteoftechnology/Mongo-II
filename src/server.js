@@ -18,9 +18,13 @@ server.get('/accepted-answer/:soID', (req, res) => {
       return Post.find({ soID: post[0].acceptedAnswerID.toString() });
     })
     .then((post) => {
-      res.status(200).json(post);
+      if (post === 'undefined') {
+        res.status(404).json({ error: 'ID Not Found' });
+      } else {
+        res.status(200).json(post);
+      }
     })
-    .catch(() => {
+    .catch((err) => {
       res.status(500).json({ error: 'Error getting data' });
     });
 });
