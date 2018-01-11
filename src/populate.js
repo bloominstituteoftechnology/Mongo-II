@@ -14,7 +14,17 @@ const readPosts = () => {
 };
 
 const populatePosts = () => {
-  // TODO: implement this
+  const allPosts = readPosts();
+  const promises = allPosts.map(p => new Post(p).save());
+  return Promise.all(promises);
 };
+
+populatePosts();
+  // .then((message) => {
+  //   res.status(200).json({ message: 'hello' });
+  // })
+  // .catch((err) => {
+  //   console.log(err);
+  // })
 
 module.exports = { readPosts, populatePosts };
