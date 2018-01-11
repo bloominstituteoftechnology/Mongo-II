@@ -14,8 +14,11 @@ const readPosts = () => {
   return savedPosts;
 };
 
+
+
 const populatePosts = () => {
   // TODO: implement this
+  // savedPosts = readPosts(); // Populate DB
   const promises = savedPosts.map(postData => new Post(postData).save());
   return Promise.all(promises);
 };

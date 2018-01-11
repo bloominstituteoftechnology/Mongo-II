@@ -44,7 +44,7 @@ const PostSchema = new mongoose.Schema({
       name: String,
       reputation: Number,
     },
-  }
+  },
 });
 
 module.exports = mongoose.model('Posts', PostSchema);
