@@ -16,46 +16,72 @@ server.use(bodyParser.json());
 server.get("/accepted-answer/:soID", function(req, res) {
   const soID = req.params.soID;
   Post.findOne({ soID })
-    .then(function(posts) {
-      const acceptedAnswerID = posts.acceptedAnswerID;
-      Post.findOne({ soID: acceptedAnswerID }).then(function(posts) {
-        if (posts) {
-          res.status(200).json(posts);
+    .then(question => {
+      const acceptedAnswerID = question.acceptedAnswerID;
+      Post.findOne({ soID: acceptedAnswerID }).then(answer => {
+        if (answer) {
+          res.status(200).json(answer); // if question and answer
         } else {
-          res.status(422).json({ error: "No accepted answer" });
+          res.status(422).json({ error: "No accepted answers." }); // question found but no answer
         }
       });
     })
-    .catch(function() {
-      res.status(422).json({ error: "The information could not be found" });
+    .catch(error => {
+      res.status(422).json({ error: "No question found." }); // no question found
     });
 });
 
 server.get("/top-answer/:soID", function(req, res) {
   const soID = req.params.soID;
-  Post.findOne({
-    soID: soID
-  })
-    .then(function(question) {
-      // console.log("question", question);
-      const acceptedAnswerID = question.acceptedAnswerID;
-      // console.log("acceptedanswerID", acceptedAnswerID);
+  Post.findOne({ soID: soID })
+    .then(question => {
+      // find question object
+      const acceptedAnswerID = question.acceptedAnswerID; // get the acceptedAnswerID from the question object
       Post.find({
-        parentID: soID,
-        acceptedAnswerID: { $ne: acceptedAnswerID }
+        parentID: soID, // soID to get the parentID,
+        soID: { $ne: acceptedAnswerID } // excluding the acceptedAnswerID
       })
-        .limit(1)
-        .sort({ score: -1 })
-        .then(function(answers) {
-          console.log("answer", answers);
-          const parentID = answers.parentID;
-          // console.log("posts.parentID", answers.parentID);
-          res.status(200).json(answers[0]);
+        .sort("-score") // find highest score
+        .then(highestScore => {
+          if (highestScore.length != 0) {
+            res.status(200).json(highestScore[0]); // return answer object
+          } else {
+            res.status(422).json({ error: "No highest score" }); // no high score found
+          }
         });
     })
+    .catch(err => {
+      res.status(422).json({ error: "Couldn't find post with given ID" }); // no matching answer to question
+    });
+});
 
-    .catch(function() {
-      res.status(422).json({ error: "The information could not be found" });
+server.get("/popular-jquery-questions", function(req, res) {
+  Post.find({
+    tags: "jquery",
+    $or: [{ score: { $gt: 5000 } }, { "user.reputation": { $gt: 200000 } }]
+  })
+    .then(answer => {
+      res.status(200).json(answer);
+    })
+    .catch(err => {
+      res.status(422).error(err);
+    });
+});
+
+server.get("/npm-answers", (req, res) => {
+  Post.find({ tags: "npm" })
+    .then(questions => {
+      const soIDsArray = questions.map(question => question.soID);
+      Post.find({ parentID: soIDsArray })
+        .then(qnA => {
+          res.status(200).json(qnA);
+        })
+        .catch(err => {
+          res.status(422).json(err);
+        });
+    })
+    .catch(err => {
+      res.tatus(422).json(err);
     });
 });
 
