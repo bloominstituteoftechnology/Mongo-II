@@ -60,7 +60,7 @@ server.get('/popular-jquery-questions', (req, res) => {
 });
 
 server.get('/npm-answers', (req, res) => {
-  Post.find({ tags: { $in: ['npm'] } })
+  Post.find({ tags: { $in: ['npm'] }, parentID: null })
     .then((questions) => {
       if (questions.length === 0) throw new Error('No questions found');
       const soIDs = [];
