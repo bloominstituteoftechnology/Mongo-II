@@ -2,6 +2,8 @@ const fs = require('fs');
 
 let savedPosts = null;
 
+const Post = require('./post.js');
+
 const readPosts = () => {
   // cache posts after reading them once
   if (!savedPosts) {
