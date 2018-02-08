@@ -14,7 +14,13 @@ const readPosts = () => {
 };
 
 const populatePosts = () => {
-  // TODO: implement this
+  const postsJson = readPosts();
+  return Post.insertMany(postsJson).then((posts) => {
+    console.log('saved posts:', posts.length);
+    return posts;
+  }).catch((err) => {
+    console.log(err);
+  });
 };
 
 module.exports = { readPosts, populatePosts };
