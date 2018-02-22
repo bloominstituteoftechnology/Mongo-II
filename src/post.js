@@ -31,8 +31,33 @@ const PostSchema = new mongoose.Schema({
   },
   body: {
     type: String,
-    
-  }  
+    required: true,
+    index: true,
+  },
+  score: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  tags: {
+    type: [String],
+    index: true,
+  },
+  acceptedAnswerID: {
+    type: Number,
+    default: null,
+  },
+  user: {
+    soUserID: {
+      type: Number
+    },
+    name: {
+      type: String
+    },
+    reputation: {
+      type: Number
+    }
+  }
 });
 
 module.exports = mongoose.model('Posts', PostSchema);

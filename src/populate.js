@@ -1,3 +1,5 @@
+import { Mongoose } from 'mongoose';
+
 const fs = require('fs');
 
 let savedPosts = null;
@@ -14,7 +16,11 @@ const readPosts = () => {
 };
 
 const populatePosts = () => {
-  // TODO: implement this
+  mongoose
+    .connect ('mongodb://localhost/miami')
+    .then ((db) => {
+      const 
+    })
 };
 
 module.exports = { readPosts, populatePosts };
