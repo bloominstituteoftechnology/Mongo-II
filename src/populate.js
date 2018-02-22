@@ -15,19 +15,25 @@ const readPosts = () => {
   return savedPosts;
 };
 
-// const getPosts = new Promise readPosts();
-
 const populatePosts = () => {
   // TODO: implement this
-  readPosts().then(result => {
+    readPosts()
     mongoose
       .connect("mongodb://localhost/so-posts", { useMongoClient: true })
       .then(db => {
         console.log("connected to the db");
-        // Post.create(savedPosts)
+        Post.create(savedPosts)
+          .then(posts => {
+            console.log('Posts added to the database');
+            mongoose.disconnect();
+            process.exit(0);
+          });
       })
-      .catch();
-  });
+      .catch(error => {
+        mongoose.disconnect();
+        process.exit(1);
+      });
 };
+
 populatePosts();
 module.exports = { readPosts, populatePosts };

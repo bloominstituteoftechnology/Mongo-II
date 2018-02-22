@@ -12,5 +12,9 @@ const server = express();
 server.use(bodyParser.json());
 
 // TODO: write your route handlers here
+server.get('/accepted-answer/:soID', (req, res) => {
+  const { soID } = req.params;
+  Post.find({ soID }) // continue here....
+});
 
 module.exports = { server };
