@@ -20,5 +20,9 @@
     "mocha": "^3.5.0",
     "mongoose": "^4.11.7",
     "nodemon": "^1.15.1"
+  },
+  "devDependencies": {
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0"
   }
 }
