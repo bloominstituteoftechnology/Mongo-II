@@ -41,4 +41,25 @@ server.get("/accepted-answer/:soID", (req, res) => {
     });
 });
 
+server.get("/top-answer/:soID", (req, res) => {
+  const { soID } = req.params;
+  Post.findOne({ soID })
+  .select("acceptedAnswerID")
+  .then(result => {
+    const acceptedAnswer = result.acceptedAnswerID;
+    Post.find({ parentID: soID })
+      .sort('-score')
+      .then(results => {
+        if (results[0].soID === acceptedAnswer) {
+          res.status(200).json(results[1])
+        } else {
+          res.status(200).json(results[0])
+        }
+      });
+  })
+  .catch(error => {
+    res.status(500).json({ error });
+  })
+});
+
 module.exports = { server };
