@@ -1,7 +1,8 @@
-const bodyParser = require('body-parser');
-const express = require('express');
+/* eslint-disable */
+const bodyParser = require("body-parser");
+const express = require("express");
 
-const Post = require('./post.js');
+const Post = require("./post.js");
 
 const STATUS_USER_ERROR = 422;
 
