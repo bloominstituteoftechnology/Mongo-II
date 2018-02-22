@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const fs = require('fs');
 
 let savedPosts = null;
@@ -15,13 +17,13 @@ const readPosts = () => {
 
 const populatePosts = () => {
   // TODO: implement this
-  const postContainer = [];
-  readPosts().forEach((postObj) => {
-    const post = Post(postObj).save();
-    postContainer.push(post);
-  });
-
-  return Promise.all(postContainer).then();
+  return Promise.all(
+    readPosts().map(post => {
+      return Post(post).save();
+    }),
+  )
+    .then(values => {})
+    .catch(err => console.log(err));
 };
 
 module.exports = { readPosts, populatePosts };
