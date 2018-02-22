@@ -15,6 +15,13 @@ const readPosts = () => {
 
 const populatePosts = () => {
   // TODO: implement this
+  const postContainer = [];
+  readPosts().forEach(postObj => {
+    const post = Post(postObj).save();
+    postContainer.push(post);
+  });
+
+  return Promise.all(postContainer).then();
 };
 
 module.exports = { readPosts, populatePosts };

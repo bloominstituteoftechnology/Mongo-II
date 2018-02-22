@@ -12,41 +12,41 @@ const PostSchema = new mongoose.Schema({
   // TODO: write your schema here
   soID: {
     type: Number,
-    required: true
+    required: true,
   },
   parentID: {
     type: Number,
   },
   url: {
     type: String,
-    required: true
+    required: true,
   },
   title: {
-    type: String
+    type: String,
   },
   body: {
     type: String,
-    required: true
+    required: true,
   },
   score: {
     type: Number,
-    required: true
+    required: true,
   },
   tags: [{ type: String }],
   acceptedAnswerID: {
-    type: String
+    type: Number,
   },
   user: {
     soUserID: {
-      type: Number
+      type: Number,
     },
     name: {
-      type: String
+      type: String,
     },
     reputation: {
-      type: Number
-    }
-  }
+      type: Number,
+    },
+  },
 });
 
 module.exports = mongoose.model('Posts', PostSchema);
