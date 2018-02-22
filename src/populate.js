@@ -16,7 +16,7 @@ const readPosts = () => {
 const populatePosts = () => {
   // TODO: implement this
   const postContainer = [];
-  readPosts().forEach(postObj => {
+  readPosts().forEach((postObj) => {
     const post = Post(postObj).save();
     postContainer.push(post);
   });
