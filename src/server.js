@@ -12,9 +12,35 @@ const server = express();
 server.use(bodyParser.json());
 
 // TODO: write your route handlers here
-server.get('/accepted-answer/:soID', (req, res) => {
+server.get("/", (req, res) => {
+  Post.find({})
+    .limit(10)
+    .then(answers => {
+      res.status(200).json(answers);
+    })
+    .catch(error => {
+      res.status(500).json({ error });
+    });
+});
+
+server.get("/accepted-answer/:soID", (req, res) => {
   const { soID } = req.params;
-  Post.find({ soID }) // continue here....
+  Post.find({ soID })
+    .select("acceptedAnswerID")
+    .then(acceptedAnswerID => {
+      res.send(acceptedAnswerID);
+    })
+    //   Post.find({ acceptedAnswerID })
+    //     .then(answer => {
+    //       res.status(200).json(answer);
+    //     })
+    //     .catch(error => {
+    //       res.status(500).json({ error });
+    //     });
+    // })
+    .catch(error => {
+      res.status(500).json({ error });
+    });
 });
 
 module.exports = { server };
