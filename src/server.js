@@ -25,19 +25,17 @@ server.get("/", (req, res) => {
 
 server.get("/accepted-answer/:soID", (req, res) => {
   const { soID } = req.params;
-  Post.find({ soID })
+  Post.findOne({ soID })
     .select("acceptedAnswerID")
-    .then(acceptedAnswerID => {
-      res.send(acceptedAnswerID);
+    .then(result => {
+      Post.findOne({ soID: result.acceptedAnswerID })
+        .then(answer => {
+          res.status(200).json(answer);
+        })
+        .catch(error => {
+          res.status(500).json({ error });
+        });
     })
-    //   Post.find({ acceptedAnswerID })
-    //     .then(answer => {
-    //       res.status(200).json(answer);
-    //     })
-    //     .catch(error => {
-    //       res.status(500).json({ error });
-    //     });
-    // })
     .catch(error => {
       res.status(500).json({ error });
     });
