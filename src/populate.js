@@ -17,21 +17,15 @@ const readPosts = () => {
 const populatePosts = () => {
   // TODO: implement this
   readPosts()
-  mongoose.connect('mongodb://localhost/so-posts', { useMongoClient: true })
-  	.then(
-		  Post.create(savedPosts)
-		  	.then((posts) =>{
-		  		console.log('Posts added');
-		  		mongoose.disconnect();
-		  	})
-		  	.catch((err) => {
-		  		console.log({ error: "Couldn't connect." });
-		  		mongoose.disconnect();
-		  	})
-  	)
-  	.catch((err) => {
-  		console.log({ error: err });
-  	});
+  savedPosts.map((post) => {
+  	Post(post).save()
+  		.then((dbPost) => {
+  			console.log('Post added')
+  		})
+  		.catch(err => {
+  			console.log({ error: err });
+  		});
+  })
 };
 
 populatePosts();
