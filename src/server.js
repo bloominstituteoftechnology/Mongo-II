@@ -63,25 +63,15 @@ server.get("/top-answer/:soID", (req, res) => {
 });
 
 server.get("/popular-jquery-questions", (req, res) => {
-  //const reputation = user.reputation;
   Post.find({
-    // tags: "jquery",
-    // user: { reputation: { $gt: 100 } },
-    // score: { $gt: 5000 }
-    // $or: [{ score: { $gt: 5000 } }, { user: { reputation: { $gt: 200000 } } }]
+    $or: [{ score: { $gt: 5000 } }, { "user.reputation": { $gt: 200000 } }]
   })
-    //.where({ tags: "jquery" })
-    // .where("score")
-    // .gt(5000)
-    //.or({ {$gt: {score: 5000}},  })
-    //.limit(10) // Take out
     .then(results => {
       res.status(200).json(results);
     })
     .catch(err => {
       res.status(500).json({ err: "Nope" });
     });
-  // .or().where('score').gt(5000)
 });
 
 module.exports = { server };
