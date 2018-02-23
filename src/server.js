@@ -43,8 +43,6 @@ server.get("/accepted-answer/:soID", (req, res) => {
 });
 
 server.get("/top-answer/:soID", (req, res) => {
-  // Find the question with the given soID (1 query).
-  // aaId = 111111
   const { soID } = req.params;
   Post.findOne({ soID })
     .then(result => {
@@ -57,7 +55,6 @@ server.get("/top-answer/:soID", (req, res) => {
           } else {
             res.status(200).json(results[0]);
           }
-          // res.status(200).json(results);
         })
         .catch(err => {
           res.send(err);
@@ -66,6 +63,46 @@ server.get("/top-answer/:soID", (req, res) => {
     .catch(err => {
       res.status(500).json({ err });
     });
-  // Send back a JSON response with the single top answer post object.
+});
+
+server.get("/popular-jquery-questions", (req, res) => {
+  //   Find all question posts that are tagged with jquery and either have a score greater than 5000, or are posted by a user with reputation greater than 200,000 (1 query).
+  Post.find({
+    tags: "jquery",
+    $or: [{ "user.reputation": { $gt: 200000 } }, { score: { $gt: 5000 } }]
+  })
+    // Post.find()
+    //   .where("tags")
+    //   .in("jquery")
+    //   .or([{ "user.reputation": { $gt: 200000 } }, { score: { $gt: 5000 } }])
+    .then(results => {
+      res.send(results);
+    })
+    .catch(err => {
+      res.send(err);
+    });
+  // Send back a JSON response with an array of popular jquery questions.
+});
+
+server.get("/npm-answers", (req, res) => {
+  Post.find()
+    .where("tags")
+    .in(["npm"])
+    .then(results => {
+      const soIdsArray = results.map(post => {
+        return { parentID: post.soID };
+      });
+      Post.find()
+        .or(soIdsArray)
+        .then(answers => {
+          res.send(answers);
+        })
+        .catch(err => {
+          res.send({ err: "didn't work" });
+        });
+    })
+    .catch(err => {
+      res.send({ err: "err dummy" });
+    });
 });
 module.exports = { server };
