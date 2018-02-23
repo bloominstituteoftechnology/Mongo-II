@@ -36,4 +36,32 @@ server.get('/accepted-answer/:soID', (req, res) => {
     })
 });
 
+server.get('/top-answer/:soID', (req, res) => {
+	const { soID } = req.params;
+	Post.findOne({soID})
+	.then(question => {
+		console.log('question', question);
+		if (question) {
+			const id = question.acceptedAnswerID;
+			Post.find({ parentID: soID })
+				.sort('-score')
+				.then((topAnswers) => {
+					if (topAnswers[0].soID !== id) {
+						res.status(200).json(topAnswers[0]);
+					} else {
+						res.status(200).json(topAnswers[1]);
+					}
+				})
+				.catch(err => {
+					res.status(500).json({ errorMessage: 'Can not access server for topAnswers' });
+				})
+		}else {
+			res.status(404).json({ errorMessage: 'Question post not found by that id' });
+		}
+	})
+	.catch(err => {
+		res.status(500).json({ errorMessage: 'Can not access server for questions' });
+	});
+})
+
 module.exports = { server };
