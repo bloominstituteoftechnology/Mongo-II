@@ -44,22 +44,44 @@ server.get("/accepted-answer/:soID", (req, res) => {
 server.get("/top-answer/:soID", (req, res) => {
   const { soID } = req.params;
   Post.findOne({ soID })
-  .select("acceptedAnswerID")
-  .then(result => {
-    const acceptedAnswer = result.acceptedAnswerID;
-    Post.find({ parentID: soID })
-      .sort('-score')
-      .then(results => {
-        if (results[0].soID === acceptedAnswer) {
-          res.status(200).json(results[1])
-        } else {
-          res.status(200).json(results[0])
-        }
-      });
+    .select("acceptedAnswerID")
+    .then(result => {
+      const acceptedAnswer = result.acceptedAnswerID;
+      Post.find({ parentID: soID })
+        .sort("-score")
+        .then(results => {
+          if (results[0].soID === acceptedAnswer) {
+            res.status(200).json(results[1]);
+          } else {
+            res.status(200).json(results[0]);
+          }
+        });
+    })
+    .catch(error => {
+      res.status(500).json({ error });
+    });
+});
+
+server.get("/popular-jquery-questions", (req, res) => {
+  //const reputation = user.reputation;
+  Post.find({
+    // tags: "jquery",
+    // user: { reputation: { $gt: 100 } },
+    // score: { $gt: 5000 }
+    // $or: [{ score: { $gt: 5000 } }, { user: { reputation: { $gt: 200000 } } }]
   })
-  .catch(error => {
-    res.status(500).json({ error });
-  })
+    //.where({ tags: "jquery" })
+    // .where("score")
+    // .gt(5000)
+    //.or({ {$gt: {score: 5000}},  })
+    //.limit(10) // Take out
+    .then(results => {
+      res.status(200).json(results);
+    })
+    .catch(err => {
+      res.status(500).json({ err: "Nope" });
+    });
+  // .or().where('score').gt(5000)
 });
 
 module.exports = { server };
