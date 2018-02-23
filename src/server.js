@@ -75,4 +75,23 @@ server.get("/popular-jquery-questions", (req, res) => {
     });
 });
 
+server.get('/npm-answers', (req, res) => {
+  Post.find({ tags: 'npm'})
+    .then(results => {
+      const soIDs = results.map(post => {
+        return { parentID: post.soID};
+      })
+      Post.find().or(soIDs)
+        .then(results => {
+          res.status(200).json(results);
+      })
+      .catch(err => {
+        res.status(500).json(err);
+      })
+    })
+    .catch(err => {
+      re.status(500).json({ err: "Still nope" });
+    })
+})
+
 module.exports = { server };
