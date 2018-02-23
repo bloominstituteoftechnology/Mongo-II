@@ -79,4 +79,38 @@ server.get('/popular-jquery-questions', (req, res) => {
   });
 });
 
+server.get('/npm-answers', (req, res) => {
+	let id = 0;
+	Post.find({ parentID: null, tags: 'npm'})
+		.then(questions => {
+			questionsIds = questions.map(q => q.soID);
+			console.log('questionsIds', questionsIds);
+			Post.find().where('parentID').in(questionsIds)
+				.then(answers => {
+					res.status(200).json({ answers });
+				})
+				.catch(err => {
+					res.status(500).json({ errorMessage: 'Could not get answers' });
+				});
+		})
+		.catch(err => {
+			res.status(500).json({ errorMessage: 'Server error getting npm answers' });
+		})
+});
+
 module.exports = { server };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
