@@ -31,7 +31,7 @@ server.get('/top-answer/:soID', (req, res) => {
 	const id = req.params.soID;
 	Post.findOne({soID: id})
 		.then(post => {
-			Post.find({parentID: id})
+			Post.find({$and: [{parentID: id}, {acceptedAnswerID: null}]})
 				.select('body score')
 				.limit(1)
 				.sort('-score')
