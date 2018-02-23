@@ -14,7 +14,7 @@ const STATUS_SERVER_ERROR = 500;
 // allows us to make and test HTTP requests
 chai.use(chaiHTTP);
 
-const expect = chai.expect;
+const { expect } = chai;
 
 /* Expects the status code expected from the given response, res. Throws
  * a useful error message if the expectation is not met. Assumes the request
@@ -24,23 +24,17 @@ const expectStatus = (expected, res, path) => {
   // STATUS_NOT_FOUND; in these cases, we have custom error messages that
   // help the student out (see switch statement below).
   if (expected === STATUS_SERVER_ERROR || expected === STATUS_NOT_FOUND) {
-    throw new Error(
-      'The expected status should be something other than ' +
-      `${STATUS_SERVER_ERROR} and ${STATUS_NOT_FOUND}`
-    );
+    throw new Error('The expected status should be something other than ' +
+      `${STATUS_SERVER_ERROR} and ${STATUS_NOT_FOUND}`);
   }
 
   switch (res.status) {
     case STATUS_SERVER_ERROR:
-      throw new Error(
-        `Your server threw an error during GET ${path} (status code 500); ` +
-        'scroll up to see the expection and backtrace'
-      );
+      throw new Error(`Your server threw an error during GET ${path} (status code 500); ` +
+        'scroll up to see the expection and backtrace');
 
     case STATUS_NOT_FOUND:
-      throw new Error(
-        `You haven't implemented a handler for GET ${path} (status code 404)`
-      );
+      throw new Error(`You haven't implemented a handler for GET ${path} (status code 404)`);
 
     default:
       if (expected !== res.status) {

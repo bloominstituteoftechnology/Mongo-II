@@ -1,4 +1,4 @@
-const expect = require('chai').expect;
+const { expect } = require('chai');
 
 const { expectPost } = require('./helpers.js');
 const { populatePosts, readPosts } = require('../src/populate.js');
