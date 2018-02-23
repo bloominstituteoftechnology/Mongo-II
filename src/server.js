@@ -64,6 +64,7 @@ server.get("/top-answer/:soID", (req, res) => {
 
 server.get("/popular-jquery-questions", (req, res) => {
   Post.find({
+    tags: "jquery",
     $or: [{ score: { $gt: 5000 } }, { "user.reputation": { $gt: 200000 } }]
   })
     .then(results => {
