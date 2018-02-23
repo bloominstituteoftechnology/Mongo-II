@@ -14,12 +14,12 @@ server.use(bodyParser.json());
 
 // TODO: write your route handlers here
 
-// server.get('/post/:soID', (req, res) => {
-//   Post.find({ parentID: req.params.soID })
-//     .sort({ acceptedAnswerID: 1 })
-//     .then(posts => res.json(posts))
-//     .catch(err => res.status(422).json(err));
-// });
+server.get('/post/:soID', (req, res) => {
+  Post.find({ soID: req.params.soID })
+    // .sort({ acceptedAnswerID: 1 })
+    .then(posts => res.json(posts))
+    .catch(err => res.status(422).json(err));
+});
 
 server.get('/accepted-answer/:soID', (req, res) => {
   Post.findOne({ soID: req.params.soID })
@@ -39,23 +39,42 @@ server.get('/accepted-answer/:soID', (req, res) => {
 });
 
 server.get('/top-answer/:soID', (req, res) => {
+  const { soID } = req.params;
+
+  if (!Number.isInteger(+soID)) {
+    res.status(422).json({ error: 'soID given does not match pattern.' })
+    return
+  }
+
   Post.findOne({ soID: req.params.soID }).then(post => {
     if (post === null) {
-      res.status(422).json({error: `No post with id ${req.params.soID} was found.`})
+      res.status(422).json({ error: `No post with id ${req.params.soID} was found.` })
       return;
     }
-
+    console.log(post);
     const answerId =
-      post.acceptedAnswerID !== null ? post.acceptedAnswerID : 'no answer';
+      post.acceptedAnswerID !== null ? post.acceptedAnswerID : -1;
 
     Post.findOne({ parentID: req.params.soID })
       .where('soID')
       .ne(answerId)
       .sort({ score: -1 })
       .then(post => {
+        if (post === null) {
+          res.status(422).json({ error: `No post with top answer found.` })
+          return;
+        }
+
         res.status(200).json(post);
       });
   });
+});
+
+server.get('/popular-jquery-questions', (req, res) => {
+  Post.find({tags: 'jquery'})
+    .where('score')
+    .then(posts => res.json(posts))
+    .catch(err => res.status(422).json(err));
 });
 
 module.exports = { server };
