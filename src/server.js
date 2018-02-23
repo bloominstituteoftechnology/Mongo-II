@@ -62,6 +62,21 @@ server.get('/top-answer/:soID', (req, res) => {
 	.catch(err => {
 		res.status(500).json({ errorMessage: 'Can not access server for questions' });
 	});
-})
+});
+
+server.get('/popular-jquery-questions', (req, res) => {
+  Post.find({ parentID: null, tags: 'jquery'})
+  .or([{score: {$gt: 5000} }, {'user.reputation': {$gt: 200000}}])
+  .then(questions => {
+    if (questions) {
+      res.status(200).json(questions);
+    } else {
+      res.status(404).json({errorMessage: 'Questions not found by popular query'});
+    }
+  })
+  .catch(error => {
+    res.status(500).json({errorMessage: 'Server error getting questions'});
+  });
+});
 
 module.exports = { server };
