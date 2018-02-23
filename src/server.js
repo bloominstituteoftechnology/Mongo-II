@@ -19,4 +19,50 @@ server.get('/', (req, res) => {
 
 // TODO: write your route handlers here
 
+// server.get('/top-answer', (req, res) => {
+//     Post.find({})
+//     .then(answers => {
+//         res.status(200).json(answers);
+//     })
+//     .catch(error => {
+//         res.status(500).json({ error });
+//     })
+// })
+
+server.get('/accepted-answer/:soID', (req, res) => {
+    const { soID } = req.params;
+    Post.findOne({ soID })
+    .select('acceptedAnswerID')
+    .then(result => {
+        Post.findOne({ soID: result.acceptedAnswerID })
+        .then(answer => {
+            res.status(200).json(answer);
+        })
+    })
+    .catch(error => {
+        res.status(500).json({ error });
+    })
+})
+
+server.get('/top-answer/:soID', (req, res) => {
+    const { soID } = req.params;
+    Post.findOne({ soID })
+    .select('acceptedAnswerID')
+    .then(result => {
+        const accepted = result.acceptedAnswerID;
+        Post.find({ parentID: soID })
+        .sort('-score')
+        .then(topResults => {
+            if(topResults[0].soID === accepted) {
+                res.status(200).json(topResults[1]);
+            } else {
+                res.status(200).json(topResults[0]);
+            }
+        })
+    })
+    .catch(error => {
+        res.status(500).json({ error });
+    })
+})
+
 module.exports = { server };
