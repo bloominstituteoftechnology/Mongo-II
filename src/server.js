@@ -17,7 +17,7 @@ server.get('/accepted-answer/:soID', (req, res) => {
 		.select('acceptedAnswerID')
 		.then(post => {
 			Post.findOne({soID: post.acceptedAnswerID})
-				.select('body')
+				.select('body score soID')
 				.then(p => {
 					res.status(200).json(p);
 				})
@@ -31,8 +31,8 @@ server.get('/top-answer/:soID', (req, res) => {
 	const id = req.params.soID;
 	Post.findOne({soID: id})
 		.then(post => {
-			Post.find({$and: [{parentID: id}, {acceptedAnswerID: null}]})
-				.select('body score')
+			Post.find({$and: [{parentID: id}, {soID: {$ne: post.acceptedAnswerID}}]})
+				.select('body score soID')
 				.limit(1)
 				.sort('-score')
 				.then(p => {
@@ -48,7 +48,7 @@ server.get('/popular-jquery-questions', (req, res) => {
 	Post.find({tags: 'jquery'})
 		.then(post => {
 			Post.find({$or: [{score: {$gt: 5000}}, {'user.reputation': {$gt: 200000}}]})
-				.select('score user.reputation')
+				.select('score user.reputation body')
 				.then(p => {
 					res.status(200).json(p);
 				})
