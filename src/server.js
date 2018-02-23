@@ -90,7 +90,7 @@ server.get('/npm-answers', (req, res) => {
       })
     })
     .catch(err => {
-      re.status(500).json({ err: "Still nope" });
+      res.status(500).json({ err: "Still nope" });
     })
 })
 
