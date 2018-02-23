@@ -40,6 +40,11 @@ server.get('/accepted-answer/:soID', (req, res) => {
 
 server.get('/top-answer/:soID', (req, res) => {
   Post.findOne({ soID: req.params.soID }).then(post => {
+    if (post === null) {
+      res.status(422).json({error: `No post with id ${req.params.soID} was found.`})
+      return;
+    }
+
     const answerId =
       post.acceptedAnswerID !== null ? post.acceptedAnswerID : 'no answer';
 
