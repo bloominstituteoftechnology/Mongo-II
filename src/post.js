@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const mongoose = require('mongoose');
 
 // Clear out mongoose's model cache to allow --watch to work for tests:
@@ -6,7 +8,7 @@ mongoose.models = {};
 mongoose.modelSchemas = {};
 
 mongoose.Promise = Promise;
-mongoose.connect('mongodb://localhost/so-posts');
+mongoose.connect('mongodb://localhost/so-posts', { useMongoClient: true });
 
 const PostSchema = new mongoose.Schema({
   // TODO: write your schema here
@@ -24,8 +26,11 @@ const PostSchema = new mongoose.Schema({
   },
   score: {
     type: Number,
+    required: true,
   },
-  parentId: Number,
+  parentId: {
+    type: Number,
+  },
   title: String,
   tag: [String],
   acceptedAnswerID: Number,

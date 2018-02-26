@@ -1,8 +1,11 @@
+/* eslint-disable */
+
 const mongoose = require('mongoose');
-let savedPosts = null;
+
+const savedPosts = null;
 
 const Post = require('./post.js');
-const Data = require('../posts.json')
+const Data = require('../posts.json');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(
@@ -17,7 +20,7 @@ const populate = () => {
   return populatePosts()
     .then(() => {
       console.log('done');
-      mongoose.disconnect()
+      mongoose.disconnect();
     })
     .catch((err) => {
       console.log('ERROR', err);
@@ -25,9 +28,8 @@ const populate = () => {
     });
 };
 
-populate()
+populate();
 // module.exports = { readPosts, populatePosts };
-
 
 
 // // const readPosts = () => {
@@ -41,7 +43,7 @@ populate()
 
 // const populatePosts = () => {
 //   readPosts()
-//   mongoose  
+//   mongoose
 //     .connect('mongodb://localhost/so-posts')
 //     .then(db => {
 //       Post.create(savedPosts)
@@ -56,9 +58,6 @@ populate()
 //     .catch(error => console.log('could not connect'));
 // };
 // populatePosts()
-
-
-
 
 
 // /* Trying to use promises no worky it does not */
