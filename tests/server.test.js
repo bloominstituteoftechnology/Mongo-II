@@ -74,7 +74,7 @@ const get = (path, status) => {
 describe('Request', () => {
   /* eslint func-names: 0 */
   before(function () {
-    this.timeout(5000);
+    this.timeout(15000);
     return Post.remove({}).then(populatePosts);
   });
 
