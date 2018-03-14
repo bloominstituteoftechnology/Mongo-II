@@ -6,6 +6,7 @@ mongoose.models = {};
 mongoose.modelSchemas = {};
 
 mongoose.connect('mongodb://localhost/so-posts');
+// mongoose.Promise = global.Promise;
 
 const PostSchema = new mongoose.Schema({
   soID: {
