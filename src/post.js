@@ -31,7 +31,21 @@ const PostSchema = new mongoose.Schema({
     required: true
   },
   tags: {
-    type:
+    type: Array
+  },
+  acceptedAnswerID: {
+    type: Number
+  },
+  user: {
+    soUserID: {
+      type: Number,
+    },
+    name: {
+      type: String,
+    },
+    reputation: {
+      type: Number,
+    },
   }
 });
 
