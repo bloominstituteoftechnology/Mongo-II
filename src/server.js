@@ -64,4 +64,17 @@ server.get('/popular-jquery-questions', (req, res) => {
   });
 });
 
+server.get('/npm-answers', (req, res) => {
+  Post.find({
+    tags: "npm"
+  })
+  .then(posts => {
+    if (!posts) {
+      res.status(STATUS_USER_ERROR).json({ message: "No posts found!" });
+    } else {
+      res.json(posts);
+    }
+  })
+})
+
 module.exports = { server };
