@@ -43,13 +43,13 @@ server.get('/top-answer/:soID', function(req, res) {
       if (found === null) {
         res.status(404).json({ error: `The specified ID does not exist` });
       }
-      Post.findOne({ parentID: soID, soID: { $ne: found.acceptedAnswerID } })
+      Post.find({ parentID: soID, soID: { $ne: found.acceptedAnswerID } })
         .sort({ score: 'desc' })
         .exec((err, answer) => {
           if (answer === null) {
             res.status(404).json({ error: `No top answer exists` });
           }
-          res.status(200).json({ topAnswer: answer });
+          res.status(200).json({ topAnswer: answer[0] });
         });
       })
     .catch(err => {
