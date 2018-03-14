@@ -1,5 +1,6 @@
 const bodyParser = require('body-parser');
 const express = require('express');
+const { populatePosts, savedPosts } = require('./populate.js');
 
 const Post = require('./post.js');
 
@@ -31,9 +32,10 @@ server.get('/accepted-answer/:soID', (req, res) => {
 })
 
 server.get('/', (req, res) => {
+  populatePosts();
   Post.find()
-    .then(posts => {
-      res.status(200).json(posts)
+    .then(savedPosts => {
+      res.status(200).json(savedPosts)
     })
     .catch(err => {
       res.status(500).json({ Error: err });
