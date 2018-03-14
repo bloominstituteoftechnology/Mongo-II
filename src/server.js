@@ -50,5 +50,18 @@ server.get('/top-answer/:soID', (req, res) => {
     });
 });
 
+server.get('/popular-jquery-questions', (req, res) => {
+  Post.find({
+    tags: "jquery",
+    $or: [{ "user.reputation": { $gt: 200000 } }, { score: { $gt: 5000 }}]
+  })
+  .then(post => {
+    if (!post) {
+      res.status(STATUS_USER_ERROR).json({ message: "No such post found." });
+    } else {
+      res.json(post);
+    }
+  });
+});
 
 module.exports = { server };
