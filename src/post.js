@@ -33,7 +33,7 @@ const PostSchema = new mongoose.Schema({
   tags: {
     type: [String],
   },
-  acceptedAnswerId: {
+  acceptedAnswerID: {
     type: Number,
   },
   user: {
