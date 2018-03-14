@@ -74,10 +74,9 @@ const get = (path, status) => {
 describe('Request', () => {
   /* eslint func-names: 0 */
   before(function () {
-    this.timeout(5000);
+    this.timeout(50000);
     return Post.remove({}).then(populatePosts);
   });
-
   describe('GET /accepted-answer/:soID', () => {
     it('returns the accepted answer', () => {
       return get('/accepted-answer/2067472', STATUS_OK)
