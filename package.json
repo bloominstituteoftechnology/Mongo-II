@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "description": "LambdaSchool Mongo II: StackQuery",
   "scripts": {
-    "start": "nodemon src/server.js",
-    "test": "eslint tests/*.js && eslint src/*.js && mocha -R nyan tests",
+    "start": "nodemon src/app.js",
+    "test": "mocha -R nyan tests",
     "watch": "npm test -- --watch"
   },
   "license": "ISC",
@@ -14,14 +14,8 @@
     "mongoose": "^5.0.6"
   },
   "devDependencies": {
-    "babel-preset-env": "^1.6.1",
     "chai": "^4.1.2",
     "chai-http": "^3.0.0",
-    "eslint": "^4.18.1",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-import": "^2.9.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.7.0",
     "mocha": "^5.0.1",
     "nodemon": "^1.15.1"
   }

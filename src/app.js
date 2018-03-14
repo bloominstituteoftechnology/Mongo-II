@@ -1,4 +1,12 @@
+const mongoose = require('mongoose');
 // Do NOT modify this file; make your changes in server.js.
 const { server } = require('./server.js');
 
-server.listen(3000);
+mongoose
+  .connect('mongodb://localhost/so-posts')
+  .then(() => {
+    server.listen(3000, () => console.log('API Server running on port 3000'));
+  })
+  .catch(error => {
+    console.error('database connection failed');
+  });
