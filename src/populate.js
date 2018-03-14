@@ -19,7 +19,7 @@ mongoose
   .then(() => {
     Post.create(readPosts())
       .then(() => {
-        console.log('population succedded');
+        console.log('population succeeded');
         mongoose.disconnect();
       })
       .catch(error => {
