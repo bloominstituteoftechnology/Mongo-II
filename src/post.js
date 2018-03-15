@@ -9,6 +9,36 @@ mongoose.connect('mongodb://localhost/so-posts');
 
 const PostSchema = new mongoose.Schema({
   // TODO: write your schema here
+  soID: {
+    type: Number,
+    required: true,
+  },
+  parentID: {
+    type: Number,
+  },
+  url: {
+    type: String,
+    required: true,
+  },
+  title: {
+
+  },
+  body: {
+    type: String,
+    required: true,
+  }, 
+  score: {
+    required: true,
+  },
+  tags: [],
+  acceptedAnswerID: {
+
+  },
+  user: {
+    soUserID: Number,
+    name: ,
+    reputation: ,
+  }
 });
 
 module.exports = mongoose.model('Posts', PostSchema);
