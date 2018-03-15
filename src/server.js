@@ -12,6 +12,10 @@ const server = express();
 server.use(bodyParser.json());
 
 server.get('/accepted-answer/:soID', (req, res) => {
+  if(req.params.soID.match(/^[0-9]+$/) === null) {
+    res.status(422).send({ errorMsg: 'Please input a valid stack overflow question id' });
+    return;
+  }
   const questionId = req.params.soID;
   Posts.findOne({ 'soID': questionId })
     .then(question => {
@@ -33,6 +37,10 @@ server.get('/accepted-answer/:soID', (req, res) => {
 });
 
 server.get('/top-answer/:soID', (req, res) => {
+  if(req.params.soID.match(/^[0-9]+$/) === null) {
+    res.status(422).send({ errorMsg: 'Please input a valid stack overflow question id' });
+    return;
+  }
   const questionId = req.params.soID;
   Posts.findOne({ 'soID': questionId })
     .then(question => {
@@ -51,7 +59,17 @@ server.get('/top-answer/:soID', (req, res) => {
       }
     })
     .catch(err => {
-      console.error('error', err);
+      res.status(500).send({ errorMsg: 'There was an error fetching the top answer.', error: err });
+    });
+});
+
+server.get('/popular-jquery-questions', (req, res) => {
+  Posts.find({ 'tags': { $all: 'jquery'}, $or: [{ 'score': { $gt: 5000 }}, { 'user.reputation': { $gt: 200000 }} ] } )
+    .then(posts => {
+      res.status(200).send(posts);
+    })
+    .catch(err => {
+      res.status(500).send({ errorMsg: 'There was an error fetching the most popular jquery questions.', error: err });
     });
 });
 
