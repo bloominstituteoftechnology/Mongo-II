@@ -12,7 +12,7 @@ const server = express();
 server.use(bodyParser.json());
 
 server.get('/accepted-answer/:soID', (req, res) => {
-  const questionId = req.params.soID + '';
+  const questionId = req.params.soID;
   Posts.findOne({ 'soID': questionId })
     .then(question => {
       if(question) {
@@ -20,11 +20,39 @@ server.get('/accepted-answer/:soID', (req, res) => {
           .then(answer => {
             res.status(200).send({ question: question, answer: answer });
           })
+          .catch(err => {
+            res.status(500).send({ errorMsg: 'There was an error fetching the accepted answer.', error: err });
+          });
+      } else {
+        res.status(404).send({ message: 'This question was not found' });
       }
     })
     .catch(err => {
       console.error('error', err);
     })
+});
+
+server.get('/top-answer/:soID', (req, res) => {
+  const questionId = req.params.soID;
+  Posts.findOne({ 'soID': questionId })
+    .then(question => {
+      if(question) {
+        const acceptedAnswer = question.acceptedAnswerID;
+        Posts.findOne({ 'parentID': questionId, 'soID': { $ne: acceptedAnswer } })
+          .sort({ score: -1 })
+          .then(top => {
+            res.status(200).send(top);
+          })
+          .catch(err => {
+            res.status(500).send({ errorMsg: 'There was an error fetching the top answer.', error: err });
+          });
+      } else {
+        res.status(404).send({ message: 'This question was not found' });
+      }
+    })
+    .catch(err => {
+      console.error('error', err);
+    });
 });
 
 module.exports = { server };
