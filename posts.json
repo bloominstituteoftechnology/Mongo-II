@@ -1,7 +1,7 @@
 [
   {
     "soID": 111102,
-    "parentID": 1,
+    "parentID": null,
     "url": "https://stackoverflow.com/q/111102",
     "title": "How do JavaScript closures work?",
     "body": "<p>How would you explain JavaScript closures to someone with a knowledge of the concepts they consist of (for example functions, variables and the like), but does not understand closures themselves?</p>\n\n<p>I have seen <a href=\"http://en.wikipedia.org/wiki/Scheme_%28programming_language%29\" rel=\"noreferrer\">the Scheme example</a> given on Wikipedia, but unfortunately it did not help.</p>\n",

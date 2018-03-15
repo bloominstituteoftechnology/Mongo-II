@@ -1,6 +1,6 @@
 const bodyParser = require('body-parser');
 const express = require('express');
-const { populatePosts, savedPosts } = require('./populate.js');
+const { populatePosts } = require('./populate.js');
 
 const Post = require('./post.js');
 
@@ -13,12 +13,11 @@ server.use(bodyParser.json());
 
 // TODO: write your route handlers here
 server.get('/accepted-answer/:soID', (req, res) => {
-  let answerID = null;
-  const { soID } = req.params;
-  Post.find({ "soID": soID })
+  const { id } = req.params;
+  Post.find({ soID: id })
     .then(post => {
-      answerID = post.acceptedAnswerID
-      Post.find({ "answerID": answerID })
+      const answerID = post.acceptedAnswerID
+      Post.find({ soID: answerID })
         .then(post => {
           res.status(200).json({AcceptedAnswer: post})
         })
@@ -31,15 +30,43 @@ server.get('/accepted-answer/:soID', (req, res) => {
     })
 })
 
-server.get('/', (req, res) => {
-  populatePosts();
-  Post.find()
-    .then(savedPosts => {
-      res.status(200).json(savedPosts)
+server.get('/top-answer/:soID', (req, res) => {
+  const { id } = req.params;
+  Post.find({ soID: id })
+    .then(post => {
+      const parentID = post.parentID;
+      const answerID = post.acceptedAnswerID;
+      Post.find({ parentID: id }).sort({ score: -1 })
+        .then(posts => {
+          const topAnswerID = posts[0].soID;
+          if(parentID === null && topAnswerID !== answerID) {
+            res.status(200).json(posts[0])
+          } else if (parentID === null && topAnswerID === acceptedAnswerID) {
+            res.status(404).json({message: 'Top Answer is Accepted Answer'})
+          }
+        })
     })
     .catch(err => {
-      res.status(500).json({ Error: err });
+      res.status(500).json({ message: 'Error' })
     })
+})
+
+server.get('/popular-jquery-questions', (req, res) => {
+  Post.find({ tags: 'jquery' })
+    .then(posts => {
+      const questions = posts.filter(post => {
+        (post.score > 5000 || post.user.reputation > 200000)
+      })
+      res.status(200).json(questions);
+    })
+    .catch(err => {
+      res.status(500).send({ error: 'error' })
+    })
+});
+
+server.get('/npm-answers', (req, res) => {
+  Post.find({ parentID: null, tags: 'npm' })
+
 })
 
 module.exports = { server };
