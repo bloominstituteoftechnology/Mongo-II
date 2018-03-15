@@ -33,7 +33,7 @@ server.get('/accepted-answer/:soID', (req, res) => {
     });
 });
 
-server.get('/top-answer/:soID', function(req, res) {
+server.get('/top-answer/:soID', (req, res) => {
   const { soID } = req.params;
   if (!soID) {
     res.status(400).json({ error: `Please provide an ID` });
@@ -55,6 +55,10 @@ server.get('/top-answer/:soID', function(req, res) {
     .catch(err => {
       res.status(500).json({ error: `The information could not be retrieved` });
     });
+});
+
+server.get('/popular-jquery-questions', (req, res) => {
+
 });
 
 module.exports = { server };
