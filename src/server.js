@@ -1,14 +1,8 @@
-const bodyParser = require('body-parser');
 const express = require('express');
-
 const Post = require('./post.js');
 
-const STATUS_USER_ERROR = 422;
-
 const server = express();
-// to enable parsing of json bodies for post requests
-
-server.use(bodyParser.json());
+server.use(express.json());
 
 server.get('/accepted-answer/:soID', (req, res) => {
   const { soID } = req.params;
@@ -87,7 +81,15 @@ server.get('/npm-answers', (req, res) => {
           }
           res.status(200).json({ return: posts });
         });
-  });
+      
+    // if (answers.length === 0) {
+    //   res.status(404).json({ error: `No posts with jquery in the tag, with a score > 5000 or user rep > 200,000, exist` });
+    // }
+    // res.status(200).json({ test: answers })
+    // if (err) {
+    //   res.status(500).json({ error: 'The information could not be retrieved' });
+    // }
+      });
 });
 
 module.exports = { server };
