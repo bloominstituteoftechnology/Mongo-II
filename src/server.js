@@ -37,7 +37,10 @@ server.get('/top-answer/:soID', (req, res) => {
       if (!post) {
         res.status(STATUS_USER_ERROR).json({ message: "No such post exists." });
       } else {
-        Post.findOne({ soID: post.acceptedAnswerID })
+        Post.findOne({ 
+          soID: { $ne: post.acceptedAnswerID },
+          parentID: post.soID
+        })
           .sort({ score: 'desc' })
           .then(answer => {
             if (!answer) {
