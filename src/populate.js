@@ -23,7 +23,7 @@ mongoose
         mongoose.disconnect();
       })
       .catch(error => {
-        console.error('population failed');
+        console.error('population failed:', error);
       });
   })
   .catch(error => {
