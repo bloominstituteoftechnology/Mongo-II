@@ -13,9 +13,7 @@ const PostSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  parentID: {
-    type: Number,
-  },
+  parentID: Number,
   url: {
     type: String,
     required: true,
@@ -28,16 +26,15 @@ const PostSchema = new mongoose.Schema({
     required: true,
   }, 
   score: {
+    type: Number,
     required: true,
   },
-  tags: [],
-  acceptedAnswerID: {
-
-  },
+  tags: [String],
+  acceptedAnswerID: Number,
   user: {
     soUserID: Number,
-    name: ,
-    reputation: ,
+    name: String,
+    reputation: Number,
   }
 });
 

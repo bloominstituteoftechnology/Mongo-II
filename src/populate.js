@@ -14,6 +14,13 @@ const readPosts = () => {
   return savedPosts;
 };
 
+const populatePosts = () => {
+  // TODO: implement this
+  const posts = readPosts();
+  const promises = posts.map(p => new Post(p).save());
+  return Promise.all(promises);
+};
+
 mongoose
   .connect('mongodb://localhost/so-posts')
   .then(() => {
