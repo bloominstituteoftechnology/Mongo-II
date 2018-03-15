@@ -27,7 +27,6 @@ const populatePosts = () => {
   });
 };
 
-
   // mongoose
   // .connect('mongodb://localhost/so-posts')
   // .then((posts) => {
