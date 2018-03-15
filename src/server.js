@@ -66,7 +66,18 @@ server.get('/popular-jquery-questions', (req, res) => {
 
 server.get('/npm-answers', (req, res) => {
   Post.find({ parentID: null, tags: 'npm' })
-
+    .then(posts => {
+        const soIds = posts.map(post => {
+          return post.soID;
+        });
+        Post.find({ parentID: { $in: soIds } })
+          .then(answers => {
+            res.json(answers)
+          })
+      })
+      .catch(err => {
+        res.status(500).json({ error: err });
+      })
 })
 
 module.exports = { server };
