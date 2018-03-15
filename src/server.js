@@ -66,4 +66,18 @@ server.get('/top-answer/:soID', (req, res) => {
     });
 });
 
+server.get('/popular-jquery-questions', (req, res) => {
+  Post.find({ tags: 'jquery', parentID: null }).or([ { score: { $gt: 5000 } }, { 'user.reputation': { $gt: 200000 } } ])
+    .then(questions => {
+      if (questions) {
+        res.status(STATUS_OK).json(questions);
+      } else {
+        res.status(STATUS_USER_ERROR).json({ error: "There is no questions with specified tag." });
+      }
+    })
+    .catch(error => {
+      res.status(STATUS_USER_ERROR).json({ error: "There was an error retrieving the questions." });
+    });
+});
+
 module.exports = { server };
