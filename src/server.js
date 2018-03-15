@@ -72,8 +72,18 @@ server.get('/npm-answers', (req, res) => {
     if (!posts) {
       res.status(STATUS_USER_ERROR).json({ message: "No posts found!" });
     } else {
-      res.json(posts);
-    }
+      const postArr = posts.map(post => post.soID);
+      Post.find({
+        parentID: { $in: postArr }
+      })
+      .then(post => {
+        if (!post) {
+          res.status(STATUS_USER_ERROR).json({ message: "No posts found!" });
+        } else {
+          res.json(post);
+        }
+      });
+    };
   });
 });
 
