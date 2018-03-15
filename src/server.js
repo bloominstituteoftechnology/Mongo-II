@@ -81,14 +81,6 @@ server.get('/npm-answers', (req, res) => {
           }
           res.status(200).json({ return: posts });
         });
-      
-    // if (answers.length === 0) {
-    //   res.status(404).json({ error: `No posts with jquery in the tag, with a score > 5000 or user rep > 200,000, exist` });
-    // }
-    // res.status(200).json({ test: answers })
-    // if (err) {
-    //   res.status(500).json({ error: 'The information could not be retrieved' });
-    // }
       });
 });
 
