@@ -19,7 +19,6 @@ const PostSchema = new mongoose.Schema({
   },
   title: {
     type: String,
-    required: true,
   },
   body: {
     type: String,
@@ -36,15 +35,12 @@ const PostSchema = new mongoose.Schema({
   user: {
     soUserID: {
       type: Number,
-      required: true,
     },
     name: {
       type: String,
-      required: true,
     },
     reputation: {
       type: Number,
-      required: true,
     }
   }
 });
