@@ -73,4 +73,20 @@ server.get('/popular-jquery-questions', (req, res) => {
     });
 });
 
+server.get('/npm-answers', (req, res) => {
+  Posts.find({ 'tags': { $all: 'npm'} })
+    .then(questions => {
+      Posts.find({ 'parentID': { $in: questions.map(questions => questions.soID) } })
+        .then(answers => {
+          res.status(200).send(answers);
+        })
+        .catch(err => {
+          res.status(400).send({ message: 'Error finding answers to the npm questions' });
+        });
+    })
+    .catch(err => {
+      res.status(400).send({ message: 'Error finding questions tagged npm' });
+    });
+});
+
 module.exports = { server };
