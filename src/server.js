@@ -74,4 +74,20 @@ server.get('/popular-jquery-questions', (req, res) => {
     });
 });
 
+server.get('/npm-answers', (req, res) => {
+  Post.find({ tags: 'npm' }, 
+    (err, posts) => {
+      if (posts.length === 0 || err) {
+        res.status(500).json({ error: 'There was an error retrieving the data'});
+      }
+      Post.find({ parentID: { $in: posts.map(post => post.soID) } })
+        .exec((err, posts) => {
+          if (posts.length === 0 || err) {
+            res.status(500).json({ error: 'There was an error retrieving the data'});
+          }
+          res.status(200).json({ return: posts });
+        });
+  });
+});
+
 module.exports = { server };
