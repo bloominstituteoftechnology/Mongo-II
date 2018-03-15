@@ -27,15 +27,15 @@ server.get('/accepted-answer/:soID', (req, res) => {
           if(answer) {
             res.status(200).json(answer);
           } else {
-            res.status(404).json({ message: "The post with specified ID does not exisit." });
+            res.status(422).json({ message: "The information could not be retrieved." });
           }
         })
         .catch(error => {
-          res.status(500).json({ error: "The information could not be retrieved." });
+          res.status(422).json({ error: "The post with specified ID does not exisit." });
         });
     })
     .catch(error => {
-      res.status(500).json({ error: "The information could not be retrieved." });
+      res.status(422).json({ error: "The post with specified ID does not exisit." });
     });
 });
 
