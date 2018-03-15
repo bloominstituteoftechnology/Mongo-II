@@ -21,10 +21,13 @@ server.get('/accepted-answer/:soID', (req, res) => {
         Post.findOne({ soID: post.acceptedAnswerID })
           .then(answer => {
             if (!answer) {
-              res.status(STATUS_USER_ERROR).json({ message: "No such answer exists"});
+              res.status(STATUS_USER_ERROR).json({ message: "No such answer exists."});
             } else {
               res.json(answer);
             }
+          })
+          .catch(err => {
+            res.status(500).json({ error: "There was an error." });
           });
       };
     });
@@ -48,6 +51,9 @@ server.get('/top-answer/:soID', (req, res) => {
             } else {
               res.json(answer);
             }
+          })
+          .catch(err => {
+            res.status(500).json({ error: "There was an error." });
           });
       };
     });
@@ -64,6 +70,9 @@ server.get('/popular-jquery-questions', (req, res) => {
     } else {
       res.json(post);
     }
+  })
+  .catch(err => {
+    res.status(500).json({ error: "There was an error." });
   });
 });
 
@@ -85,6 +94,9 @@ server.get('/npm-answers', (req, res) => {
         } else {
           res.json(post);
         }
+      })
+      .catch(err => {
+        res.status(500).json({ error: "There was an error." });
       });
     };
   });
