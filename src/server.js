@@ -80,4 +80,20 @@ server.get('/popular-jquery-questions', (req, res) => {
     });
 });
 
+server.get('/npm-answers', (req, res) => {
+  Post.find({ tags: 'npm', parentID: null })
+    .then(questions => {
+      Post.find().where('parentID').in(questions.map(ques => ques.soID))
+        .then(answers => {
+          res.status(STATUS_OK).json(answers);
+        })
+        .catch(error => {
+        res.status(STATUS_USER_ERROR).json({ error: "There was an error retrieving the answers." });
+        });
+    })
+    .catch(error => {
+      res.status(STATUS_USER_ERROR).json({ error: "There was an error retrieving the questions." });
+    });
+});
+
 module.exports = { server };
