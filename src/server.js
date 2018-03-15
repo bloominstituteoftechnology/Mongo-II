@@ -74,7 +74,7 @@ server.get('/npm-answers', (req, res) => {
     } else {
       res.json(posts);
     }
-  })
-})
+  });
+});
 
 module.exports = { server };

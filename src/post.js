@@ -6,23 +6,19 @@ mongoose.models = {};
 mongoose.modelSchemas = {};
 
 mongoose.connect('mongodb://localhost/so-posts');
-// mongoose.Promise = global.Promise;
+
 
 const PostSchema = new mongoose.Schema({
   soID: {
     type: Number,
     required: true,
   },
-  parentID: {
-    type: Number,
-  },
+  parentID: Number,
   url: {
     type: String,
     required: true,
   },
-  title: {
-    type: String,
-  },
+  title: String,
   body: {
     type: String,
     required: true,
@@ -31,12 +27,8 @@ const PostSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  tags: {
-    type: [String],
-  },
-  acceptedAnswerID: {
-    type: Number,
-  },
+  tags: [String],
+  acceptedAnswerID: Number,
   user: {
     soUserID: Number,
     name: String,
