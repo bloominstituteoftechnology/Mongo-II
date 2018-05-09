@@ -56,6 +56,17 @@ server.get('/popular-jquery-questions', (req, res, next) => {
     .catch(() => next(errors.serverError))
 })
 
+// Provides an array of answers to questions tagged `npm`
+server.get('/npm-answers', (req, res, next) => {
+  Post.find({ tags: 'npm' })
+    .then(posts => {
+      Post.find({ parentID: { $in: posts.map(post => post.soID) } })
+        .then(answers => res.send(answers))
+        .catch(() => next(errors.serverError))
+    })
+    .catch(() => next(errors.serverError))
+})
+
 server.use((error, req, res, next) => {
   res.status(error.status).send({ error: error.message })
 })
