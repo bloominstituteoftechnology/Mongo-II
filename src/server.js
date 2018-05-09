@@ -43,6 +43,19 @@ server.get('/top-answer/:soID', (req, res, next) => {
     .catch(() => next(errors.noPostWithId))
 })
 
+// Provide the jquery questions with either score > 5,000 or
+// posted by a user with > 200,000 reputation
+server.get('/popular-jquery-questions', (req, res, next) => {
+  Post.find({
+    tags: 'jquery',
+    $or: [
+      { score: { $gt: 5000 } },
+      { 'user.reputation': { $gt: 200000 } }
+    ]
+  }).then(posts => res.send(posts))
+    .catch(() => next(errors.serverError))
+})
+
 server.use((error, req, res, next) => {
   res.status(error.status).send({ error: error.message })
 })
