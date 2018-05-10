@@ -60,4 +60,21 @@ server.get("/top-answer/:soID", (req, res, next) => {
     });
 });
 
+server.get("/popular-jquery-questions", (req, res, next) => {
+  Post.find({
+    $and: [
+      { tags: "jquery" },
+      {
+        $or: [{ score: { $gt: 5000 } }, { "user.reputation": { $gt: 200000 } }]
+      }
+    ]
+  })
+    .then(post => {
+      res.status(200).json(post);
+    })
+    .catch(error => {
+      res.status(500).json(error);
+    });
+});
+
 module.exports = { server };
