@@ -37,4 +37,27 @@ server.get("/accepted-answer/:soID", (req, res, next) => {
     });
 });
 
+server.get("/top-answer/:soID", (req, res, next) => {
+  const { soID } = req.params;
+  Post.findOne({ soID })
+    .then(post => {
+      if (post) {
+        Post.findOne({ soID: { $ne: post.acceptedAnswerID } })
+          .sort("-score")
+          .limit(1)
+          .then(response => {
+            res.status(200).json(response);
+          })
+          .catch(error => {
+            res.status(500).json(error);
+          });
+      } else {
+        res.status(404).json({ message: "No such post found" });
+      }
+    })
+    .catch(error => {
+      res.status(500).json(error);
+    });
+});
+
 module.exports = { server };
