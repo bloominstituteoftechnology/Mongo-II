@@ -14,13 +14,18 @@ const readPosts = () => {
   return savedPosts;
 };
 
+const populatePosts = () => {
+  let posts = readPosts();
+  console.log(posts);
+}
+
 mongoose
-  .connect('mongodb://localhost/so-posts')
+  .connect('mongodb://localhost/so-posts')//enters mongoDB, creates a collection
   .then(() => {
-    Post.create(readPosts())
+    Post.create(readPosts())// create collection of posts
       .then(() => {
         console.log('population succedded');
-        mongoose.disconnect();
+        mongoose.disconnect();// leaves mongoDB
       })
       .catch(error => {
         console.error('population failed');
@@ -29,3 +34,5 @@ mongoose
   .catch(error => {
     console.error('database connection failed');
   });
+
+module.exports = { populatePosts, savedPosts };
